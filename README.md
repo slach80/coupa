@@ -77,6 +77,27 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
 }
 ```
 
+### GitHub Copilot (VS Code)
+
+Copilot supports MCP in [agent mode](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) (VS Code 1.99+). Add to your VS Code `settings.json`:
+
+```json
+"mcp": {
+  "servers": {
+    "coupa": {
+      "type": "stdio",
+      "command": "coupa-mcp",
+      "env": {
+        "COUPA_API_URL": "https://myinstance.coupahost.com/api",
+        "COUPA_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+Then in the Copilot Chat panel, switch to **Agent mode** and the Coupa tools will be available. No changes to the server are needed — it uses stdio transport which all MCP clients support.
+
 ## Project Structure
 
 ```
