@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Guide - Activity Code Classification</title>
+</head>
+<body style="font-family: 'Segoe UI', sans-serif; line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5;">
+    <div style="background: white; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+        <header style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 10px 10px 0 0;">
+            <h1>User Guide</h1>
+            <p>How to Use the Classification System</p>
+        </header>
+
+        <div style="padding: 40px;">
+            <nav style="padding: 15px; background: #f8f9fa; margin-bottom: 30px; border-radius: 8px;">
+                <a href="index.html" style="color: #667eea; text-decoration: none;">← Back to Overview</a>
+            </nav>
+
+            <section style="margin-bottom: 50px;">
+                <h2 style="color: #667eea; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">Getting Started</h2>
+
+                <h3 style="color: #764ba2; margin-top: 25px;">For Finance Team: Reviewing Classifications</h3>
+                <p style="color: #666;">After the system processes invoices, you'll receive an Excel review report with three key sheets:</p>
+
+                <div style="background: #f8f9fa; padding: 20px; border-left: 4px solid #51cf66; margin: 20px 0;">
+                    <h4 style="color: #51cf66;">✓ Sheet 1: Auto-Assigned (≥70% Confidence)</h4>
+                    <p style="color: #666;">Invoices that the system classified with high confidence. These codes have been automatically applied.</p>
+                    <p style="color: #666;"><strong>Action:</strong> Spot-check for accuracy. If you find errors, use the admin review tool to correct them.</p>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-left: 4px solid #ffa94d; margin: 20px 0;">
+                    <h4 style="color: #ffa94d;">? Sheet 2: Needs Review (20-70% Confidence)</h4>
+                    <p style="color: #666;">Invoices where the system has moderate confidence. Shows top 3 suggested codes with rationale.</p>
+                    <p style="color: #666;"><strong>Action:</strong> Review suggestions and select the correct code. Your choice will be recorded and improve future classifications.</p>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-left: 4px solid #ff6b6b; margin: 20px 0;">
+                    <h4 style="color: #ff6b6b;">⚠ Sheet 3: Admin Alerts (Non-IT Vendors)</h4>
+                    <p style="color: #666;">Vendors flagged as non-IT (cleaning, benefits, legal, etc.). System has suggested a code but needs admin approval.</p>
+                    <p style="color: #666;"><strong>Action:</strong> Verify the suggested code is correct. If approved, the vendor will be auto-classified in future.</p>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-left: 4px solid #748ffc; margin: 20px 0;">
+                    <h4 style="color: #748ffc;">📋 Sheet 4: Suggestions (Alternative Codes)</h4>
+                    <p style="color: #666;">Additional suggestions for invoices in the 20-70% confidence band.</p>
+                    <p style="color: #666;"><strong>Action:</strong> Use these alternatives if the top suggestion doesn't fit.</p>
+                </div>
+            </section>
+
+            <section style="margin-bottom: 50px;">
+                <h2 style="color: #667eea; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">Running the Classification System</h2>
+
+                <h3 style="color: #764ba2;">Option 1: CLI Script (Manual Run)</h3>
+                <div style="background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; font-family: monospace; margin: 15px 0;">
+# Process an Excel file<br>
+python scripts/classify_invoices.py --input SAMPLE.xlsx --output classified_output.xlsx<br>
+<br>
+# Generate review report only (don't modify input file)<br>
+python scripts/classify_invoices.py --input SAMPLE.xlsx --report-only<br>
+<br>
+# Process specific invoice sheet<br>
+python scripts/classify_invoices.py --input SAMPLE.xlsx --sheet "Nov2025_Inv"<br>
+<br>
+# Set custom confidence threshold<br>
+python scripts/classify_invoices.py --input SAMPLE.xlsx --threshold 80
+                </div>
+
+                <h3 style="color: #764ba2;">Option 2: Scheduled Batch Job (Automated)</h3>
+                <p style="color: #666;">If configured, the system runs automatically on a schedule (e.g., nightly at 2 AM). You'll receive an email with:</p>
+                <ul style="color: #666;">
+                    <li>Summary of invoices processed</li>
+                    <li>Count of auto-assigned vs. needs review</li>
+                    <li>Link to review report</li>
+                    <li>Admin alerts requiring attention</li>
+                </ul>
+
+                <h3 style="color: #764ba2;">Option 3: MCP Tools (Real-Time)</h3>
+                <p style="color: #666;">If using Claude Desktop or MCP-enabled tools, you can classify invoices in real-time:</p>
+                <div style="background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; font-family: monospace; margin: 15px 0;">
+# Classify a single invoice<br>
+coupa_classify_invoice(invoice_id="12345", line_number=1)<br>
+<br>
+# Batch classify invoices from date range<br>
+coupa_batch_classify_invoices(start_date="2025-11-01", end_date="2025-11-30")<br>
+<br>
+# Get admin alerts<br>
+coupa_get_admin_alerts(status="pending")
+                </div>
+            </section>
+
+            <section style="margin-bottom: 50px;">
+                <h2 style="color: #667eea; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">Making Corrections (Feedback Loop)</h2>
+
+                <p style="color: #666;">When you correct a classification, the system learns from it. Here's how:</p>
+
+                <h3 style="color: #764ba2;">Method 1: Edit Review Report Directly</h3>
+                <ol style="color: #666;">
+                    <li>Open the review report Excel file</li>
+                    <li>Find the invoice in "Needs Review" or "Admin Alerts" sheet</li>
+                    <li>Enter the correct activity code in the "Corrected_Code" column</li>
+                    <li>Save the file</li>
+                    <li>Run the admin review script:</li>
+                </ol>
+                <div style="background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; font-family: monospace; margin: 15px 0;">
+python scripts/admin_review.py --import review_report_20260501.xlsx
+                </div>
+
+                <h3 style="color: #764ba2;">Method 2: Use Admin CLI Tool</h3>
+                <div style="background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; font-family: monospace; margin: 15px 0;">
+# Correct a single invoice<br>
+python scripts/admin_review.py --invoice-id "12345" --line 1 --code "WP100" --reason "This is laptop purchase, not software"<br>
+<br>
+# Approve non-IT vendor suggestion<br>
+python scripts/admin_review.py --approve-alert 42<br>
+<br>
+# List pending alerts<br>
+python scripts/admin_review.py --list-alerts
+                </div>
+
+                <h3 style="color: #764ba2;">What Happens After Correction?</h3>
+                <ul style="color: #666;">
+                    <li>The correction is stored in the <code>manual_overrides</code> table</li>
+                    <li>If the same supplier appears 3+ times with the same corrected code, it's added to <code>supplier_activity_mappings</code></li>
+                    <li>Future invoices from that supplier will be auto-assigned with high confidence (95%)</li>
+                    <li>You can track improvement by re-running the classification on the same data</li>
+                </ul>
+            </section>
+
+            <section style="margin-bottom: 50px;">
+                <h2 style="color: #667eea; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">Understanding Confidence Scores</h2>
+
+                <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                    <thead>
+                        <tr style="background: #667eea; color: white;">
+                            <th style="padding: 12px; text-align: left;">Confidence Range</th>
+                            <th style="padding: 12px; text-align: left;">Meaning</th>
+                            <th style="padding: 12px; text-align: left;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 12px;"><strong style="color: #51cf66;">90-100%</strong></td>
+                            <td style="padding: 12px;">Exact historical match or manual override</td>
+                            <td style="padding: 12px;">✓ Highly reliable, auto-assigned</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 12px;"><strong style="color: #51cf66;">70-89%</strong></td>
+                            <td style="padding: 12px;">Strong fuzzy match or commodity match</td>
+                            <td style="padding: 12px;">✓ Good confidence, auto-assigned</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 12px;"><strong style="color: #ffa94d;">50-69%</strong></td>
+                            <td style="padding: 12px;">Moderate match, some ambiguity</td>
+                            <td style="padding: 12px;">? Review suggestions, select best</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 12px;"><strong style="color: #ffa94d;">20-49%</strong></td>
+                            <td style="padding: 12px;">Weak match or non-IT vendor</td>
+                            <td style="padding: 12px;">? Manual review required</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e0e0e0;">
+                            <td style="padding: 12px;"><strong style="color: #ff6b6b;">0-19%</strong></td>
+                            <td style="padding: 12px;">No match found, new supplier</td>
+                            <td style="padding: 12px;">✗ Manual classification required</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section style="margin-bottom: 50px;">
+                <h2 style="color: #667eea; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">Common Scenarios</h2>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h4 style="color: #667eea;">Scenario 1: Supplier sells multiple product types</h4>
+                    <p style="color: #666;"><strong>Example:</strong> CDW DIRECT LLC appears with both WP100 (laptops) and WP320 (VPN licenses)</p>
+                    <p style="color: #666;"><strong>Solution:</strong> System uses commodity/description to differentiate. If uncertain, it will suggest both and ask you to choose.</p>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h4 style="color: #667eea;">Scenario 2: New supplier never seen before</h4>
+                    <p style="color: #666;"><strong>Example:</strong> "ACME SOFTWARE INC" - no historical data</p>
+                    <p style="color: #666;"><strong>Solution:</strong> System checks commodity/description for keywords. If it finds "software license" → suggests PL150. You confirm, and future ACME invoices auto-assign.</p>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h4 style="color: #667eea;">Scenario 3: Non-IT vendor (e.g., cleaning service)</h4>
+                    <p style="color: #666;"><strong>Example:</strong> "JAN-PRO CLEANING SERVICES"</p>
+                    <p style="color: #666;"><strong>Solution:</strong> System detects "CLEANING" keyword, suggests SC500 (Property & Facility), flags for admin approval. You approve, and future JAN-PRO invoices auto-assign SC500.</p>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h4 style="color: #667eea;">Scenario 4: Supplier name typo or variation</h4>
+                    <p style="color: #666;"><strong>Example:</strong> "MICROSOFT (AZURE)" vs. "MICROSOFT AZURE" vs. "MS AZURE"</p>
+                    <p style="color: #666;"><strong>Solution:</strong> Fuzzy matching handles variations. All three will match to the same activity code (IN100) with high confidence.</p>
+                </div>
+            </section>
+
+            <section style="margin-bottom: 50px;">
+                <h2 style="color: #667eea; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">Troubleshooting</h2>
+
+                <h3 style="color: #764ba2;">Issue: Classification seems wrong</h3>
+                <p style="color: #666;"><strong>Check:</strong> Review the "Classification_Method" column in the report. This shows why the system chose that code (fuzzy match, commodity match, etc.)</p>
+                <p style="color: #666;"><strong>Fix:</strong> Correct the code using the admin review tool. The system will learn from your correction.</p>
+
+                <h3 style="color: #764ba2;">Issue: Too many "needs review" invoices</h3>
+                <p style="color: #666;"><strong>Possible cause:</strong> Confidence threshold too high (default: 70%)</p>
+                <p style="color: #666;"><strong>Fix:</strong> Lower threshold to 60% using <code>--threshold 60</code> flag. This will auto-assign more invoices but may reduce accuracy slightly.</p>
+
+                <h3 style="color: #764ba2;">Issue: Non-IT vendor not flagged</h3>
+                <p style="color: #666;"><strong>Possible cause:</strong> Keyword not in detection list</p>
+                <p style="color: #666;"><strong>Fix:</strong> Contact development team to add the keyword to <code>admin_alerts.py</code> detection rules.</p>
+
+                <h3 style="color: #764ba2;">Issue: Batch processing is slow</h3>
+                <p style="color: #666;"><strong>Expected time:</strong> ~30ms per invoice (1000 invoices in ~30 seconds)</p>
+                <p style="color: #666;"><strong>If slower:</strong> Contact development team to enable parallel processing for large batches.</p>
+            </section>
+
+            <section style="margin-bottom: 50px;">
+                <h2 style="color: #667eea; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">Best Practices</h2>
+
+                <ul style="color: #666;">
+                    <li><strong>Review Auto-Assigned Invoices:</strong> Spot-check 5-10% of auto-assigned codes to ensure accuracy</li>
+                    <li><strong>Provide Detailed Corrections:</strong> When correcting, add a reason in the "Reason" column to help the system learn</li>
+                    <li><strong>Approve Admin Alerts Promptly:</strong> Non-IT vendors will keep triggering alerts until approved</li>
+                    <li><strong>Run Regularly:</strong> Process invoices monthly or quarterly to keep data current</li>
+                    <li><strong>Monitor Metrics:</strong> Track auto-assignment rate over time - it should improve as the system learns</li>
+                    <li><strong>Feedback Loop:</strong> The more corrections you provide, the smarter the system becomes</li>
+                </ul>
+            </section>
+
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 8px; text-align: center; margin: 40px 0;">
+                <h3 style="color: white; font-size: 1.6em; margin-bottom: 15px;">Need Help?</h3>
+                <p style="font-size: 1.1em;">Contact the IT team or finance operations for support</p>
+            </div>
+
+            <p style="margin-top: 40px;"><a href="index.html" style="color: #667eea; text-decoration: none; font-weight: bold;">← Back to Overview</a></p>
+        </div>
+
+        <footer style="background: #2c3e50; color: white; padding: 20px; text-align: center; border-radius: 0 0 10px 10px;">
+            <p>Activity Code Classification System - User Guide</p>
+            <p style="margin-top: 10px; opacity: 0.7;">Last Updated: May 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

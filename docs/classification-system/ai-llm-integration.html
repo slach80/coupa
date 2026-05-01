@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI/LLM Integration - Activity Code Classification</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; }
+        header h1 { font-size: 2.2em; margin-bottom: 10px; }
+        .breadcrumb { padding: 15px 40px; background: #f8f9fa; border-bottom: 1px solid #e0e0e0; }
+        .breadcrumb a { color: #667eea; text-decoration: none; }
+        .content { padding: 40px; }
+        .section { margin-bottom: 50px; }
+        .section h2 { color: #667eea; font-size: 1.8em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #e0e0e0; }
+        .section h3 { color: #764ba2; font-size: 1.4em; margin: 25px 0 15px; }
+        .section h4 { color: #667eea; font-size: 1.1em; margin: 20px 0 10px; }
+        .code-block { background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9em; margin: 15px 0; }
+        .use-case-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0; }
+        .use-case-card { background: #f8f9fa; padding: 25px; border-radius: 8px; border-left: 4px solid #667eea; }
+        .use-case-card h4 { color: #667eea; margin-bottom: 10px; font-size: 1.2em; }
+        .use-case-card p { color: #666; font-size: 0.95em; }
+        .use-case-card .example { background: white; padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 0.9em; color: #555; }
+        .highlight-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 8px; margin: 30px 0; }
+        .highlight-box h3 { color: white; font-size: 1.6em; margin-bottom: 15px; }
+        .highlight-box p { color: rgba(255,255,255,0.9); font-size: 1.05em; line-height: 1.8; }
+        .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
+        .pros, .cons { padding: 20px; border-radius: 8px; }
+        .pros { background: #d4edda; border-left: 4px solid #28a745; }
+        .cons { background: #f8d7da; border-left: 4px solid #dc3545; }
+        .pros h4 { color: #155724; margin-bottom: 15px; }
+        .cons h4 { color: #721c24; margin-bottom: 15px; }
+        ul { padding-left: 30px; color: #666; }
+        ul li { margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        table th { background: #667eea; color: white; padding: 12px; text-align: left; }
+        table td { padding: 12px; border-bottom: 1px solid #e0e0e0; }
+        table tr:hover { background: #f8f9fa; }
+        .architecture-diagram { background: #2d2d2d; color: #f8f8f2; padding: 30px; border-radius: 8px; overflow-x: auto; font-family: monospace; font-size: 0.85em; margin: 20px 0; line-height: 1.5; white-space: pre; }
+        footer { background: #2c3e50; color: white; padding: 20px 40px; text-align: center; }
+        footer a { color: white; text-decoration: none; }
+        @media (max-width: 768px) { .pros-cons { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI / LLM Integration</h1>
+            <p>Enhancing Classification with Large Language Models</p>
+        </header>
+
+        <div class="breadcrumb">
+            <a href="index.html">← Overview</a> | <a href="technical-spec.html">← Technical Spec</a>
+        </div>
+
+        <div class="content">
+            <div class="highlight-box">
+                <h3>🤖 AI-Enhanced Classification</h3>
+                <p>Large Language Models (LLMs) can significantly improve classification accuracy for ambiguous cases, provide natural language explanations, and handle complex supplier descriptions. This page outlines integration strategies using Claude, GPT-4, or open-source models.</p>
+            </div>
+
+            <div class="section">
+                <h2>When to Use LLMs</h2>
+                <p>LLMs should augment, not replace, the rule-based classification engine. Best used for:</p>
+
+                <div class="use-case-grid">
+                    <div class="use-case-card">
+                        <h4>📝 Ambiguous Cases (20-70% Confidence)</h4>
+                        <p>When rule-based classifier is uncertain, LLM can analyze full context (supplier name, commodity, description, historical patterns) to make informed decision.</p>
+                        <div class="example"><strong>Example:</strong> "ALPHA TECH SOLUTIONS" with commodity "IT Consulting" could be Development, Security, or Infrastructure. LLM reads description to determine correct classification.</div>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h4>🆕 New Suppliers (0-20% Confidence)</h4>
+                        <p>First-time suppliers with no historical data. LLM can infer activity code from business description and commodity type.</p>
+                        <div class="example"><strong>Example:</strong> "BETA CLOUD ANALYTICS INC" - no history. LLM recognizes "Cloud Analytics" → suggests PL210 (Data Analytics) or IN100 (Compute).</div>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h4>💬 Natural Language Explanations</h4>
+                        <p>Generate human-readable rationale for each classification decision to help users understand why a code was assigned.</p>
+                        <div class="example"><strong>Example:</strong> "Assigned DL320 (Cyber Security) because supplier 'Fortinet' is a known security vendor and commodity 'Firewall Management' matches cyber security keywords."</div>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h4>🔍 Complex Multi-Product Suppliers</h4>
+                        <p>Suppliers selling diverse products (CDW, Amazon) where description analysis is critical. LLM excels at understanding context.</p>
+                        <div class="example"><strong>Example:</strong> "CDW - Microsoft Office 365 Licenses" → WP210 (Collaboration) vs. "CDW - Dell Laptops" → WP100 (Client Computing).</div>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h4>📚 Learning from Corrections</h4>
+                        <p>Analyze patterns in manual corrections to suggest new classification rules or keyword mappings.</p>
+                        <div class="example"><strong>Example:</strong> LLM notices "VPN" frequently corrected to WP320 → suggests adding "VPN" as WP320 keyword.</div>
+                    </div>
+
+                    <div class="use-case-card">
+                        <h4>🌐 Multi-Language Support</h4>
+                        <p>Classify invoices with non-English supplier names or descriptions by translating and understanding context.</p>
+                        <div class="example"><strong>Example:</strong> "SOCIÉTÉ DE SERVICES INFORMATIQUES" → LLM recognizes French for "IT Services" → suggests DL100.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Integration Architecture</h2>
+
+                <div class="architecture-diagram">┌────────────────────────────────────────────────────────────┐
+│         INVOICE CLASSIFICATION REQUEST                    │
+└──────────────────────┬─────────────────────────────────────┘
+                       │
+                       ▼
+┌────────────────────────────────────────────────────────────┐
+│        RULE-BASED CLASSIFIER (Primary)                     │
+│  - Fuzzy matching, commodity keywords, historical          │
+│  - Returns: activity_code, confidence (0-100%)             │
+└──────────────────────┬─────────────────────────────────────┘
+                       │
+                       ▼
+              ┌────────────────┐
+              │ Confidence < 70%? │
+              └────────┬───────┬─┘
+                       │       │
+                   YES │       │ NO → Return classification
+                       │       │
+                       ▼       └─→ (Auto-assign, done)
+┌────────────────────────────────────────────────────────────┐
+│           LLM CLASSIFIER (Fallback)                        │
+│  ┌──────────────────────────────────────────────────────┐  │
+│  │  Build Prompt:                                       │  │
+│  │  - Supplier name, commodity, description             │  │
+│  │  - Historical data (past 3 invoices from supplier)  │  │
+│  │  - Activity code definitions (all 59 codes)         │  │
+│  │  - Current suggestions from rule-based classifier   │  │
+│  └──────────────────────────────────────────────────────┘  │
+│                                                            │
+│  Call LLM API (Claude, GPT-4, or local model)             │
+│                                                            │
+│  ┌──────────────────────────────────────────────────────┐  │
+│  │  LLM Response:                                       │  │
+│  │  {                                                   │  │
+│  │    "activity_code": "DL320",                        │  │
+│  │    "confidence": 85,                                │  │
+│  │    "rationale": "Supplier Fortinet is known for..."│  │
+│  │    "alternative_codes": ["IN310", "DL340"]         │  │
+│  │  }                                                   │  │
+│  └──────────────────────────────────────────────────────┘  │
+└──────────────────────┬─────────────────────────────────────┘
+                       │
+                       ▼
+┌────────────────────────────────────────────────────────────┐
+│           CONFIDENCE BLENDING                              │
+│  - If LLM confidence > rule-based: Use LLM result          │
+│  - If both agree: Boost confidence                         │
+│  - If disagree: Flag for manual review                     │
+└──────────────────────┬─────────────────────────────────────┘
+                       │
+                       ▼
+                  Final Result</div>
+
+                <h3>Integration Points</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Integration Type</th>
+                            <th>When to Call LLM</th>
+                            <th>Latency</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Synchronous (Real-Time)</strong></td>
+                            <td>Every low-confidence case immediately</td>
+                            <td>2-5 seconds</td>
+                            <td>$0.01-0.05 per invoice</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Asynchronous (Background)</strong></td>
+                            <td>Queue low-confidence invoices, batch process</td>
+                            <td>Minutes-hours</td>
+                            <td>$0.005-0.02 per invoice (batch discounts)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>On-Demand (User-Triggered)</strong></td>
+                            <td>Only when user clicks "AI Suggest" button</td>
+                            <td>2-5 seconds</td>
+                            <td>$0.01-0.05 per request (pay as needed)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Hybrid (Threshold-Based)</strong></td>
+                            <td>Auto-call for 40-70%, manual for <40%</td>
+                            <td>Mixed</td>
+                            <td>Optimized (fewer calls)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>Implementation Options</h2>
+
+                <h3>Option 1: Anthropic Claude API (Recommended)</h3>
+
+                <div class="code-block"><span style="color: #75715e;"># classification/llm/claude_classifier.py</span>
+<span style="color: #66d9ef;">import</span> anthropic
+<span style="color: #66d9ef;">from</span> typing <span style="color: #66d9ef;">import</span> Dict, List
+
+<span style="color: #66d9ef;">class</span> <span style="color: #a6e22e;">ClaudeClassifier</span>:
+    <span style="color: #66d9ef;">def</span> <span style="color: #a6e22e;">__init__</span>(self, api_key: str):
+        self.client = anthropic.Anthropic(api_key=api_key)
+
+    <span style="color: #66d9ef;">def</span> <span style="color: #a6e22e;">classify_with_llm</span>(
+        self,
+        invoice_line: Dict,
+        rule_based_suggestions: List[Dict],
+        activity_codes: List[Dict]
+    ) -> Dict:
+        <span style="color: #75715e;">"""Use Claude to classify ambiguous invoice."""</span>
+
+        prompt = <span style="color: #e6db74;">f"""You are an expert at classifying procurement invoices into activity codes.
+
+Invoice Details:
+- Supplier: {invoice_line['supplier']}
+- Commodity: {invoice_line['commodity']}
+- Description: {invoice_line['description']}
+- Amount: ${invoice_line['amount']}
+
+Rule-based classifier suggestions (low confidence):
+{self._format_suggestions(rule_based_suggestions)}
+
+Available Activity Codes:
+{self._format_activity_codes(activity_codes)}
+
+Task: Determine the most appropriate activity code for this invoice line.
+
+Respond in JSON format:
+{{
+  "activity_code": "CODE",
+  "confidence": 0-100,
+  "rationale": "Clear explanation of why this code is correct",
+  "alternative_codes": ["CODE1", "CODE2"]
+}}"""</span>
+
+        message = self.client.messages.create(
+            model=<span style="color: #e6db74;">"claude-3-5-sonnet-20241022"</span>,
+            max_tokens=<span style="color: #ae81ff;">1024</span>,
+            messages=[{<span style="color: #e6db74;">"role"</span>: <span style="color: #e6db74;">"user"</span>, <span style="color: #e6db74;">"content"</span>: prompt}]
+        )
+
+        <span style="color: #66d9ef;">import</span> json
+        result = json.loads(message.content[<span style="color: #ae81ff;">0</span>].text)
+
+        <span style="color: #75715e;"># Add method tracking</span>
+        result[<span style="color: #e6db74;">"method"</span>] = <span style="color: #e6db74;">"claude_llm"</span>
+        result[<span style="color: #e6db74;">"model"</span>] = <span style="color: #e6db74;">"claude-3-5-sonnet"</span>
+
+        <span style="color: #66d9ef;">return</span> result
+
+    <span style="color: #66d9ef;">def</span> <span style="color: #a6e22e;">_format_suggestions</span>(self, suggestions: List[Dict]) -> str:
+        <span style="color: #66d9ef;">return</span> <span style="color: #e6db74;">"\n"</span>.join([
+            <span style="color: #e6db74;">f"- {s['code']} ({s['confidence']}%): {s['rationale']}"</span>
+            <span style="color: #66d9ef;">for</span> s <span style="color: #66d9ef;">in</span> suggestions
+        ])
+
+    <span style="color: #66d9ef;">def</span> <span style="color: #a6e22e;">_format_activity_codes</span>(self, codes: List[Dict]) -> str:
+        <span style="color: #75715e;"># Summarize codes to fit context window</span>
+        <span style="color: #66d9ef;">return</span> <span style="color: #e6db74;">"\n"</span>.join([
+            <span style="color: #e6db74;">f"{c['code']}: {c['level3_name']} - {c['definition'][:100]}"</span>
+            <span style="color: #66d9ef;">for</span> c <span style="color: #66d9ef;">in</span> codes
+        ])
+</div>
+
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>✓ Advantages</h4>
+                        <ul>
+                            <li>Best-in-class reasoning for complex cases</li>
+                            <li>Extended context window (200K tokens)</li>
+                            <li>Structured JSON output</li>
+                            <li>Fast response times (2-3 seconds)</li>
+                            <li>Reliable, production-ready API</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>✗ Considerations</h4>
+                        <ul>
+                            <li>Cost: $3/million input tokens, $15/million output</li>
+                            <li>Requires Anthropic API key</li>
+                            <li>External API dependency</li>
+                            <li>Rate limits apply</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Option 2: OpenAI GPT-4</h3>
+
+                <div class="code-block"><span style="color: #75715e;"># Alternative: OpenAI GPT-4</span>
+<span style="color: #66d9ef;">import</span> openai
+
+<span style="color: #66d9ef;">def</span> <span style="color: #a6e22e;">classify_with_gpt4</span>(invoice_line, suggestions, activity_codes):
+    response = openai.ChatCompletion.create(
+        model=<span style="color: #e6db74;">"gpt-4-turbo-preview"</span>,
+        messages=[
+            {<span style="color: #e6db74;">"role"</span>: <span style="color: #e6db74;">"system"</span>, <span style="color: #e6db74;">"content"</span>: <span style="color: #e6db74;">"You are an expert at classifying procurement invoices."</span>},
+            {<span style="color: #e6db74;">"role"</span>: <span style="color: #e6db74;">"user"</span>, <span style="color: #e6db74;">"content"</span>: prompt}
+        ],
+        response_format={<span style="color: #e6db74;">"type"</span>: <span style="color: #e6db74;">"json_object"</span>}
+    )
+    <span style="color: #66d9ef;">return</span> json.loads(response.choices[<span style="color: #ae81ff;">0</span>].message.content)
+</div>
+
+                <h3>Option 3: Local Open-Source Model (Llama 3, Mixtral)</h3>
+
+                <div class="code-block"><span style="color: #75715e;"># Local deployment using Ollama or vLLM</span>
+<span style="color: #66d9ef;">import</span> requests
+
+<span style="color: #66d9ef;">def</span> <span style="color: #a6e22e;">classify_with_local_llm</span>(invoice_line, suggestions):
+    <span style="color: #75715e;"># Assumes Ollama running locally</span>
+    response = requests.post(
+        <span style="color: #e6db74;">"http://localhost:11434/api/generate"</span>,
+        json={
+            <span style="color: #e6db74;">"model"</span>: <span style="color: #e6db74;">"llama3:70b"</span>,
+            <span style="color: #e6db74;">"prompt"</span>: prompt,
+            <span style="color: #e6db74;">"format"</span>: <span style="color: #e6db74;">"json"</span>
+        }
+    )
+    <span style="color: #66d9ef;">return</span> response.json()
+</div>
+
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h4>✓ Advantages</h4>
+                        <ul>
+                            <li>No per-request costs (after hardware)</li>
+                            <li>Data stays on-premises (privacy)</li>
+                            <li>No rate limits or API dependencies</li>
+                            <li>Full control over model and tuning</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h4>✗ Considerations</h4>
+                        <ul>
+                            <li>Requires GPU infrastructure (~$5K-20K)</li>
+                            <li>DevOps overhead (deployment, monitoring)</li>
+                            <li>Lower quality than Claude/GPT-4</li>
+                            <li>Slower inference (5-10 seconds)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Prompt Engineering Best Practices</h2>
+
+                <h3>Effective Prompt Structure</h3>
+
+                <div class="code-block">You are an expert at classifying procurement invoices into activity codes.
+
+<span style="color: #75715e;">### Context</span>
+Our company uses 59 activity codes across 5 categories:
+- Business (BS): Revenue operations, CRM, sales
+- Delivery (DL): Development, operations, security
+- Infrastructure (IN): Compute, data center, network
+- Platform (PL): Applications, data, development platforms
+- Support/Corporate (SC): Accounting, legal, HR, facilities
+- Workplace (WP): Client devices, collaboration, productivity
+
+<span style="color: #75715e;">### Invoice Details</span>
+Supplier: {{supplier}}
+Commodity: {{commodity}}
+Description: {{description}}
+Amount: ${{amount}}
+
+<span style="color: #75715e;">### Historical Data (if available)</span>
+This supplier has been classified as:
+- {{past_code_1}} (3 times)
+- {{past_code_2}} (1 time)
+
+<span style="color: #75715e;">### Rule-Based Suggestions (Low Confidence)</span>
+1. {{code_1}} ({{conf_1}}%): {{rationale_1}}
+2. {{code_2}} ({{conf_2}}%): {{rationale_2}}
+3. {{code_3}} ({{conf_3}}%): {{rationale_3}}
+
+<span style="color: #75715e;">### Available Activity Codes</span>
+{{full_list_of_codes_with_definitions}}
+
+<span style="color: #75715e;">### Task</span>
+Determine the most appropriate activity code. Consider:
+1. Supplier business type (what do they sell?)
+2. Commodity code semantics
+3. Description details
+4. Historical patterns
+5. Consistency with similar invoices
+
+Respond in JSON:
+{
+  "activity_code": "CODE",
+  "confidence": 0-100,
+  "rationale": "Why this code? Reference specific details.",
+  "alternative_codes": ["CODE1", "CODE2"],
+  "flags": ["non_it_vendor", "ambiguous", "high_value"]
+}
+</div>
+
+                <h3>Tips for Better Results</h3>
+
+                <ul>
+                    <li><strong>Include Definitions:</strong> Provide activity code definitions, not just codes</li>
+                    <li><strong>Show Examples:</strong> Include 2-3 past classifications for similar suppliers</li>
+                    <li><strong>Request Reasoning:</strong> Ask for rationale to validate LLM logic</li>
+                    <li><strong>Structured Output:</strong> Use JSON mode for reliable parsing</li>
+                    <li><strong>Add Context:</strong> Historical data improves accuracy significantly</li>
+                    <li><strong>Temperature:</strong> Use low temperature (0.2-0.3) for consistent classifications</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Cost Analysis</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Invoices/Month</th>
+                            <th>LLM Usage</th>
+                            <th>Cost (Claude)</th>
+                            <th>Cost (GPT-4)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Conservative (40-70% confidence only)</strong></td>
+                            <td>3,768</td>
+                            <td>~750 invoices (20%)</td>
+                            <td>~$30/month</td>
+                            <td>~$45/month</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Moderate (20-70% confidence)</strong></td>
+                            <td>3,768</td>
+                            <td>~1,500 invoices (40%)</td>
+                            <td>~$60/month</td>
+                            <td>~$90/month</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Aggressive (all <70%)</strong></td>
+                            <td>3,768</td>
+                            <td>~2,260 invoices (60%)</td>
+                            <td>~$90/month</td>
+                            <td>~$135/month</td>
+                        </tr>
+                        <tr>
+                            <td><strong>On-Demand (user-triggered)</strong></td>
+                            <td>3,768</td>
+                            <td>~200 invoices (~5%)</td>
+                            <td>~$8/month</td>
+                            <td>~$12/month</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p style="margin-top: 20px;"><strong>Recommendation:</strong> Start with <em>On-Demand</em> (user-triggered) to validate effectiveness, then expand to <em>Conservative</em> auto-mode after confirming accuracy improvement justifies cost.</p>
+            </div>
+
+            <div class="section">
+                <h2>Accuracy Improvement Estimates</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Confidence Range</th>
+                            <th>Rule-Based Accuracy</th>
+                            <th>+ LLM Accuracy</th>
+                            <th>Improvement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>70-100% (Auto-assign)</strong></td>
+                            <td>95%</td>
+                            <td>95% (no LLM used)</td>
+                            <td>+0%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>50-70% (Suggestions)</strong></td>
+                            <td>75%</td>
+                            <td>90%</td>
+                            <td><strong>+15%</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>20-50% (Low Confidence)</strong></td>
+                            <td>60%</td>
+                            <td>85%</td>
+                            <td><strong>+25%</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>0-20% (Manual Review)</strong></td>
+                            <td>40%</td>
+                            <td>75%</td>
+                            <td><strong>+35%</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p style="margin-top: 20px;"><strong>Expected Impact:</strong> LLM integration can increase overall auto-assignment rate from 60% to 75% while maintaining 95%+ accuracy.</p>
+            </div>
+
+            <div class="section">
+                <h2>Implementation Roadmap</h2>
+
+                <h3>Phase 1: Proof of Concept (Week 1-2)</h3>
+                <ul>
+                    <li>Integrate Claude API with on-demand "AI Suggest" button</li>
+                    <li>Test with 50 low-confidence invoices from SAMPLE.xlsx</li>
+                    <li>Measure accuracy improvement vs. rule-based alone</li>
+                    <li>Estimate cost per invoice</li>
+                </ul>
+
+                <h3>Phase 2: Selective Automation (Week 3-4)</h3>
+                <ul>
+                    <li>Auto-call LLM for 40-70% confidence range</li>
+                    <li>If LLM confidence ≥80%, auto-assign</li>
+                    <li>If LLM confidence 50-80%, add to suggestions</li>
+                    <li>Monitor cost and accuracy metrics</li>
+                </ul>
+
+                <h3>Phase 3: Optimization (Month 2)</h3>
+                <ul>
+                    <li>Fine-tune confidence thresholds</li>
+                    <li>Implement prompt caching to reduce costs</li>
+                    <li>Add batch processing for overnight runs</li>
+                    <li>Consider local LLM for cost savings (if volume high)</li>
+                </ul>
+
+                <h3>Phase 4: Advanced Features (Month 3+)</h3>
+                <ul>
+                    <li>LLM analyzes manual corrections to suggest rule improvements</li>
+                    <li>Natural language query interface ("Show me all security spend")</li>
+                    <li>Anomaly detection (unusual supplier/activity combinations)</li>
+                    <li>Multi-language invoice support</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Recommended Approach</h3>
+                <p><strong>Start Rule-Based Only (Phase 1 of main project):</strong> Build core classification engine without LLM. Measure baseline accuracy and auto-assignment rate.</p>
+                <p style="margin-top: 15px;"><strong>Add LLM Selectively (Phase 2, optional):</strong> After validating rule-based approach, add LLM for ambiguous cases (40-70% confidence). Start with on-demand user-triggered, expand to automatic based on results.</p>
+                <p style="margin-top: 15px;"><strong>Total Cost:</strong> Rule-based system: $30K dev + $100/month infra. + LLM: +$1-2K dev + $30-90/month API costs.</p>
+            </div>
+
+            <p style="margin-top: 40px;"><strong>Next:</strong> <a href="technical-spec.html" style="color: #667eea; font-weight: bold;">Review Technical Specification →</a></p>
+        </div>
+
+        <footer>
+            <p><a href="index.html">← Back to Overview</a> | <a href="technical-spec.html">Technical Spec →</a> | <a href="webapp-architecture.html">Web App Architecture →</a></p>
+        </footer>
+    </div>
+</body>
+</html>
