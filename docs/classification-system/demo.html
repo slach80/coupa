@@ -297,6 +297,64 @@
             background: #e3f2fd;
         }
 
+        .search-result-item {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+
+        .search-result-item:hover {
+            background: #f8f9fa;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-code {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .search-result-desc {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .search-result-select {
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.85em;
+            cursor: pointer;
+            white-space: nowrap;
+            margin-left: 15px;
+        }
+
+        .search-result-select:hover {
+            background: #5568d3;
+        }
+
+        #searchResults.active {
+            display: block !important;
+        }
+
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-style: italic;
+        }
+
         .suggestion-header {
             display: flex;
             justify-content: space-between;
@@ -453,6 +511,23 @@
             <div id="currentInvoiceInfo" style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin: 15px 0;">
                 <!-- Invoice details -->
             </div>
+
+            <div style="margin: 20px 0;">
+                <label for="codeSearchBox" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">
+                    🔍 Search All Activity Codes
+                </label>
+                <input
+                    type="text"
+                    id="codeSearchBox"
+                    class="search-box"
+                    placeholder="Search by code or description (e.g., 'DL320', 'security', 'database')..."
+                    style="width: 100%; margin-bottom: 15px;">
+                <div id="searchResults" style="max-height: 250px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 6px; display: none;">
+                    <!-- Search results populated here -->
+                </div>
+            </div>
+
+            <h3 style="color: #667eea; margin-bottom: 15px;">Top Suggestions</h3>
             <div id="suggestionsList">
                 <!-- Suggestions populated by JS -->
             </div>
@@ -841,7 +916,126 @@
                 </div>
             `).join('');
 
+            // Setup search box listeners
+            const codeSearchBox = document.getElementById('codeSearchBox');
+            codeSearchBox.value = '';
+            codeSearchBox.addEventListener('input', searchActivityCodes);
+
+            // Show popular codes on focus
+            codeSearchBox.addEventListener('focus', () => {
+                if (codeSearchBox.value.length === 0) {
+                    const popularCodes = [
+                        ['WP100', activityCodeDefs['WP100']],
+                        ['IN100', activityCodeDefs['IN100']],
+                        ['DL320', activityCodeDefs['DL320']],
+                        ['DL100', activityCodeDefs['DL100']],
+                        ['WP220', activityCodeDefs['WP220']],
+                        ['PL210', activityCodeDefs['PL210']],
+                        ['BS310', activityCodeDefs['BS310']],
+                        ['DL350', activityCodeDefs['DL350']]
+                    ];
+
+                    const searchResults = document.getElementById('searchResults');
+                    searchResults.innerHTML = '<div style="padding: 10px; background: #f8f9fa; font-size: 0.85em; color: #666; border-bottom: 1px solid #e0e0e0;">📌 Popular Codes - Start typing to search all codes</div>' +
+                        popularCodes.map(([code, desc]) => `
+                            <div class="search-result-item">
+                                <div style="flex: 1;">
+                                    <div class="search-result-code">${code}</div>
+                                    <div class="search-result-desc">${desc}</div>
+                                </div>
+                                <button class="search-result-select" onclick="selectFromSearch('${code}')">Select</button>
+                            </div>
+                        `).join('');
+                    searchResults.classList.add('active');
+                }
+            });
+
             document.getElementById('suggestionsModal').classList.add('active');
+        }
+
+        function searchActivityCodes(e) {
+            const query = e.target.value.toLowerCase().trim();
+            const searchResults = document.getElementById('searchResults');
+
+            if (query.length === 0) {
+                searchResults.classList.remove('active');
+                return;
+            }
+
+            if (query.length < 2) {
+                // Show all codes as a preview
+                const allCodes = Object.entries(activityCodeDefs).slice(0, 8);
+                searchResults.innerHTML = '<div style="padding: 10px; background: #f8f9fa; font-size: 0.85em; color: #666;">Type to search activity codes...</div>' +
+                    allCodes.map(([code, desc]) => `
+                        <div class="search-result-item">
+                            <div style="flex: 1;">
+                                <div class="search-result-code">${code}</div>
+                                <div class="search-result-desc">${desc}</div>
+                            </div>
+                            <button class="search-result-select" onclick="selectFromSearch('${code}')">Select</button>
+                        </div>
+                    `).join('');
+                searchResults.classList.add('active');
+                return;
+            }
+
+            // Search through all activity codes with relevance scoring
+            const matches = Object.entries(activityCodeDefs)
+                .map(([code, desc]) => {
+                    let score = 0;
+                    const codeLower = code.toLowerCase();
+                    const descLower = desc.toLowerCase();
+
+                    // Exact code match gets highest priority
+                    if (codeLower === query) score = 1000;
+                    else if (codeLower.startsWith(query)) score = 100;
+                    else if (codeLower.includes(query)) score = 50;
+
+                    // Description matches
+                    if (descLower.includes(query)) score += 10;
+
+                    // Word boundary matches in description get bonus
+                    const words = descLower.split(/\s+/);
+                    if (words.some(w => w.startsWith(query))) score += 20;
+
+                    return { code, desc, score };
+                })
+                .filter(item => item.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10);
+
+            if (matches.length === 0) {
+                searchResults.innerHTML = '<div class="no-results">No matching activity codes found. Try terms like "security", "cloud", "database"</div>';
+                searchResults.classList.add('active');
+                return;
+            }
+
+            // Highlight matching text
+            function highlightMatch(text, query) {
+                const regex = new RegExp(`(${query})`, 'gi');
+                return text.replace(regex, '<mark style="background: #ffeb3b; padding: 2px 0;">$1</mark>');
+            }
+
+            searchResults.innerHTML = matches.map(({code, desc}) => `
+                <div class="search-result-item">
+                    <div style="flex: 1;">
+                        <div class="search-result-code">${highlightMatch(code, query)}</div>
+                        <div class="search-result-desc">${highlightMatch(desc, query)}</div>
+                    </div>
+                    <button class="search-result-select" onclick="selectFromSearch('${code}')">Select</button>
+                </div>
+            `).join('');
+
+            searchResults.classList.add('active');
+        }
+
+        function selectFromSearch(code) {
+            const invoice = mockInvoices.find(i => i.id === currentInvoiceId);
+
+            alert(`✓ Code "${code}" selected from search!\n\nSupplier: ${invoice.supplier}\nNew Code: ${code}\n${activityCodeDefs[code]}\n\nIn the real system, this would be applied and stored for future learning.`);
+
+            closeModal('suggestionsModal');
+            selectedSuggestion = null;
         }
 
         function selectSuggestion(index) {
