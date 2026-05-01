@@ -168,6 +168,46 @@
         .action-btn.approve { background: #51cf66; color: white; }
         .action-btn.approve:hover { background: #40b352; }
 
+        .activity-code {
+            position: relative;
+            cursor: help;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .activity-code:hover {
+            text-decoration: underline;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: #2c3e50;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            white-space: normal;
+            max-width: 300px;
+            z-index: 1001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .tooltip.active {
+            opacity: 1;
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 20px;
+            border: 6px solid transparent;
+            border-top-color: #2c3e50;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -370,6 +410,8 @@
                 </tbody>
             </table>
         </div>
+
+        <div id="pagination"></div>
     </div>
 
     <!-- Suggestions Modal -->
@@ -416,6 +458,48 @@
 
     <script>
         // Mock invoice data
+        // Activity code definitions for tooltips
+        const activityCodeDefs = {
+            'WP100': 'Client Computing Default - End user computing devices, software and support',
+            'IN100': 'Compute Default - Cloud compute, servers, virtualization infrastructure',
+            'SC500': 'Property & Facility Default - Facilities, office space, utilities',
+            'BS310': 'CRM - Customer relationship management systems and tools',
+            'DL320': 'Cyber Security - Security tools, training, consulting',
+            'DL100': 'Development Default - Software development tools and platforms',
+            'PL140': 'Development Platform - Dev platform licenses and infrastructure',
+            'WP220': 'Communication - Voice, video, messaging platforms',
+            'PL210': 'Data Analytics & Visualizations - BI tools, analytics platforms',
+            'WP210': 'Collaboration | O365 - Collaboration tools, Office 365',
+            'DL350': 'Identity & Access Management - IAM, SSO, directory services',
+            'IN310': 'Data Network - Network infrastructure, switches, routers',
+            'SC800': 'Workforce Default - HR systems, recruiting, workforce management',
+            'PL160': 'Message Bus & Integration - Integration platforms, middleware',
+            'BS320': 'Other Sales & Marketing Exp. - Marketing automation, sales tools',
+            'WP240': 'Productivity - Productivity software and tools',
+            'DL500': 'Support Default - Helpdesk, support tools and platforms',
+            'IN360': 'Voice Network - VoIP, telephony infrastructure',
+            'WP230': 'Print & Copy - Printing, copying services and equipment',
+            'PL150': 'Foundation Platform - Core application platforms, databases',
+            'WP320': 'Remote Access - VPN, remote desktop, remote access tools',
+            'DL240': 'IT Service Management - ITSM tools, service desk platforms',
+            'DL340': 'Governance, Risk & Compliance - GRC tools and consulting',
+            'SC230': 'General Accounting & Reporting - Financial systems, ERP',
+            'SC210': 'AP & Expense Reimbursement - Accounts payable, expense systems',
+            'DL450': 'Program, Product & Project Management - PPM tools and platforms',
+            'PL220': 'Data Management - Data management, ETL, data quality',
+            'PL230': 'Data Warehouse - Data warehouse platforms and services',
+            'IN400': 'Storage Default - Storage systems, backup, archiving',
+            'IN330': 'Internet Connectivity - CDN, internet services, bandwidth',
+            'PL110': 'Application Hosting - Application hosting, PaaS services',
+            'DL430': 'Innovation & Ideation - Innovation programs, R&D tools',
+            'SC610': 'M&A Default - Mergers & acquisitions related activities',
+            'DL460': 'IT Financial Management - IT financial planning and tools',
+            'DL440': 'IT Vendor Management - Vendor management tools and services',
+            'SC400': 'Legal Default - Legal services, contract management',
+            'SC240': 'Payroll & Time Reporting - Payroll systems, time tracking',
+            'SC600': 'Risk/Audit/Compliance - Audit, risk management, compliance'
+        };
+
         const mockInvoices = [
             { id: 'INV-001', invoice: '2025-1101', supplier: 'CDW DIRECT LLC', commodity: 'Computer Hardware', amount: 4250.00, code: 'WP100', confidence: 95, method: 'exact_historical', status: 'auto', suggestions: [{code: 'WP100', conf: 95, rationale: 'Exact match from historical data. CDW consistently classified as WP100 (Client Computing Default) for hardware purchases.'}, {code: 'WP320', conf: 65, rationale: 'Alternative if this is networking/VPN equipment rather than end-user hardware.'}, {code: 'IN100', conf: 45, rationale: 'Consider if this is server/cloud compute infrastructure.'}] },
             { id: 'INV-002', invoice: '2025-1102', supplier: 'MICROSOFT (AZURE) 7954', commodity: 'Cloud Services', amount: 12800.00, code: 'IN100', confidence: 92, method: 'fuzzy_supplier', status: 'auto', suggestions: [{code: 'IN100', conf: 92, rationale: 'Fuzzy match to "Azure" supplier mapping. IN100 (Compute Default) is correct for cloud compute.'}, {code: 'PL110', conf: 55, rationale: 'Consider if this is application hosting rather than raw compute.'}, {code: 'IN400', conf: 40, rationale: 'Alternative if Azure storage services.'}] },
@@ -473,6 +557,9 @@
         let currentSort = { column: null, asc: true };
         let selectedSuggestion = null;
         let currentInvoiceId = null;
+        let currentPage = 1;
+        const itemsPerPage = 15;
+        let activeTooltip = null;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
@@ -485,15 +572,30 @@
             const tbody = document.getElementById('invoiceTable');
             tbody.innerHTML = '';
 
-            currentData.forEach(invoice => {
+            // Pagination
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedData = currentData.slice(startIndex, endIndex);
+
+            paginatedData.forEach(invoice => {
                 const row = document.createElement('tr');
+
+                // Build activity code cell with tooltip
+                let codeCell = '';
+                if (invoice.code) {
+                    const codeDef = activityCodeDefs[invoice.code] || 'Activity code definition';
+                    codeCell = `<span class="activity-code" data-code="${invoice.code}" data-definition="${codeDef}">${invoice.code}</span>`;
+                } else {
+                    codeCell = '<em>None</em>';
+                }
+
                 row.innerHTML = `
                     <td>${invoice.invoice}</td>
                     <td>${invoice.supplier}</td>
                     <td>${invoice.commodity}</td>
                     <td>$${invoice.amount.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
                     <td>
-                        ${invoice.code || '<em>None</em>'}
+                        ${codeCell}
                         ${getStatusBadge(invoice.status)}
                     </td>
                     <td><span class="confidence ${getConfidenceClass(invoice.confidence)}">${invoice.confidence}%</span></td>
@@ -507,6 +609,76 @@
                 `;
                 tbody.appendChild(row);
             });
+
+            // Add tooltip event listeners to activity codes
+            document.querySelectorAll('.activity-code').forEach(codeEl => {
+                codeEl.addEventListener('mouseenter', showTooltip);
+                codeEl.addEventListener('mouseleave', hideTooltip);
+            });
+
+            renderPagination();
+        }
+
+        function showTooltip(e) {
+            const codeEl = e.target;
+            const definition = codeEl.dataset.definition;
+            const code = codeEl.dataset.code;
+
+            // Remove existing tooltip
+            if (activeTooltip) {
+                activeTooltip.remove();
+            }
+
+            // Create tooltip
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip active';
+            tooltip.textContent = `${code}: ${definition}`;
+            document.body.appendChild(tooltip);
+
+            // Position tooltip
+            const rect = codeEl.getBoundingClientRect();
+            tooltip.style.left = rect.left + 'px';
+            tooltip.style.top = (rect.top - tooltip.offsetHeight - 10) + 'px';
+
+            activeTooltip = tooltip;
+        }
+
+        function hideTooltip() {
+            if (activeTooltip) {
+                activeTooltip.classList.remove('active');
+                setTimeout(() => {
+                    if (activeTooltip) {
+                        activeTooltip.remove();
+                        activeTooltip = null;
+                    }
+                }, 200);
+            }
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(currentData.length / itemsPerPage);
+            const container = document.getElementById('pagination');
+
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '<div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">';
+            html += `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''} style="padding: 8px 12px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 4px;">← Prev</button>`;
+            html += `<span style="color: #666;">Page ${currentPage} of ${totalPages}</span>`;
+            html += `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''} style="padding: 8px 12px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 4px;">Next →</button>`;
+            html += '</div>';
+
+            container.innerHTML = html;
+        }
+
+        function changePage(page) {
+            const totalPages = Math.ceil(currentData.length / itemsPerPage);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderTable();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function getStatusBadge(status) {
@@ -549,6 +721,7 @@
                     } else {
                         currentData = mockInvoices.filter(inv => inv.status === filter);
                     }
+                    currentPage = 1;
                     renderTable();
                     updateStats();
                 });
@@ -563,6 +736,7 @@
                     (inv.code && inv.code.toLowerCase().includes(query)) ||
                     inv.commodity.toLowerCase().includes(query)
                 );
+                currentPage = 1;
                 renderTable();
                 updateStats();
             });
