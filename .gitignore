@@ -5,3 +5,10 @@ __pycache__/
 dist/
 build/
 .venv/
+venv/
+*.pyc
+__pycache__/
+*.db
+*.log
+.coverage
+.pytest_cache/
