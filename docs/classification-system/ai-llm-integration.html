@@ -246,7 +246,7 @@ Respond in JSON format:
 }}"""</span>
 
         message = self.client.messages.create(
-            model=<span style="color: #e6db74;">"claude-3-5-sonnet-20241022"</span>,
+            model=<span style="color: #e6db74;">"claude-sonnet-4-6"</span>,  <span style="color: #75715e;"># Latest Claude model as of May 2026</span>
             max_tokens=<span style="color: #ae81ff;">1024</span>,
             messages=[{<span style="color: #e6db74;">"role"</span>: <span style="color: #e6db74;">"user"</span>, <span style="color: #e6db74;">"content"</span>: prompt}]
         )
@@ -299,11 +299,14 @@ Respond in JSON format:
                 <h3>Option 2: OpenAI GPT-4</h3>
 
                 <div class="code-block"><span style="color: #75715e;"># Alternative: OpenAI GPT-4</span>
-<span style="color: #66d9ef;">import</span> openai
+<span style="color: #66d9ef;">from</span> openai <span style="color: #66d9ef;">import</span> OpenAI
+<span style="color: #66d9ef;">import</span> json
+
+client = OpenAI(api_key=<span style="color: #e6db74;">"your-api-key"</span>)
 
 <span style="color: #66d9ef;">def</span> <span style="color: #a6e22e;">classify_with_gpt4</span>(invoice_line, suggestions, activity_codes):
-    response = openai.ChatCompletion.create(
-        model=<span style="color: #e6db74;">"gpt-4-turbo-preview"</span>,
+    response = client.chat.completions.create(
+        model=<span style="color: #e6db74;">"gpt-4-turbo"</span>,
         messages=[
             {<span style="color: #e6db74;">"role"</span>: <span style="color: #e6db74;">"system"</span>, <span style="color: #e6db74;">"content"</span>: <span style="color: #e6db74;">"You are an expert at classifying procurement invoices."</span>},
             {<span style="color: #e6db74;">"role"</span>: <span style="color: #e6db74;">"user"</span>, <span style="color: #e6db74;">"content"</span>: prompt}

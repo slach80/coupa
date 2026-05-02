@@ -4,223 +4,256 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Implementation Plan - Activity Code Classification</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; }
+        header h1 { font-size: 2.2em; margin-bottom: 10px; }
+        .breadcrumb { padding: 15px 40px; background: #f8f9fa; border-bottom: 1px solid #e0e0e0; }
+        .breadcrumb a { color: #667eea; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .content { padding: 40px; }
+        .section { margin-bottom: 50px; }
+        .section h2 { color: #667eea; font-size: 1.8em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #e0e0e0; }
+        .section h3 { color: #764ba2; font-size: 1.4em; margin: 25px 0 15px; }
+        ul, ol { padding-left: 30px; color: #666; }
+        ul li, ol li { margin-bottom: 10px; }
+        .phase-box { background: #f8f9fa; padding: 25px; border-left: 4px solid #667eea; margin: 20px 0; border-radius: 4px; }
+        .phase-box.alt { border-left-color: #764ba2; }
+        .phase-box h3 { margin-bottom: 15px; font-size: 1.3em; }
+        .phase-box p { margin-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        thead { background: #667eea; color: white; }
+        thead th { padding: 12px; text-align: left; font-weight: 600; }
+        tbody td { padding: 12px; border-bottom: 1px solid #e0e0e0; }
+        tbody tr:hover { background: #f8f9fa; }
+        .highlight-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 8px; text-align: center; margin: 40px 0; }
+        .highlight-box h3 { color: white; font-size: 1.8em; margin-bottom: 15px; }
+        .highlight-box p { color: rgba(255,255,255,0.9); font-size: 1.1em; line-height: 1.8; }
+        footer { background: #2c3e50; color: white; padding: 20px 40px; text-align: center; }
+        footer a { color: white; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+    </style>
 </head>
-<body style="font-family: 'Segoe UI', sans-serif; line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px;">
-    <header style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 10px;">
-        <h1>Implementation Plan</h1>
-        <p>5-Week Phased Rollout</p>
-    </header>
+<body>
+    <div class="container">
+        <header>
+            <h1>Implementation Plan</h1>
+            <p>5-Week Phased Rollout</p>
+        </header>
 
-    <div style="padding: 20px; background: white;">
-        <nav style="padding: 15px; background: #f8f9fa; margin-bottom: 30px;">
-            <a href="index.html" style="color: #667eea;">← Back to Overview</a>
-        </nav>
-
-        <section style="margin-bottom: 40px;">
-            <h2 style="color: #667eea; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">Phase-by-Phase Breakdown</h2>
-
-            <div style="background: #f8f9fa; padding: 25px; border-left: 4px solid #667eea; margin: 20px 0;">
-                <h3 style="color: #667eea;">Week 1: Database & Data Loading</h3>
-                <p><strong>Goal:</strong> Establish database foundation and load historical data</p>
-                <ul style="color: #666;">
-                    <li>Create SQLite schema (5 tables)</li>
-                    <li>Load Activity Codes_Active sheet → <code>activity_codes</code> table</li>
-                    <li>Parse pipe-delimited supplier names → <code>supplier_activity_mappings</code></li>
-                    <li>Write database unit tests</li>
-                    <li>Create data loading script</li>
-                </ul>
-                <p><strong>Deliverables:</strong></p>
-                <ul style="color: #666;">
-                    <li>✓ <code>classification/database.py</code> with SQLAlchemy models</li>
-                    <li>✓ <code>scripts/load_activity_codes.py</code></li>
-                    <li>✓ Populated SQLite database with 59 activity codes</li>
-                    <li>✓ 40+ supplier-to-code historical mappings</li>
-                </ul>
-            </div>
-
-            <div style="background: #f8f9fa; padding: 25px; border-left: 4px solid #764ba2; margin: 20px 0;">
-                <h3 style="color: #764ba2;">Week 2-3: Classification Engine</h3>
-                <p><strong>Goal:</strong> Build core classification logic with all matchers</p>
-                <ul style="color: #666;">
-                    <li>Implement fuzzy matcher (RapidFuzz)</li>
-                    <li>Build keyword matcher (commodity + description)</li>
-                    <li>Create non-IT vendor detector with admin alert logic</li>
-                    <li>Implement confidence scoring algorithms</li>
-                    <li>Build classification engine orchestrator</li>
-                    <li>Write comprehensive unit tests (≥90% coverage)</li>
-                </ul>
-                <p><strong>Deliverables:</strong></p>
-                <ul style="color: #666;">
-                    <li>✓ <code>classification/engine.py</code> - main classification logic</li>
-                    <li>✓ <code>classification/matchers/fuzzy_matcher.py</code></li>
-                    <li>✓ <code>classification/matchers/keyword_matcher.py</code></li>
-                    <li>✓ <code>classification/admin_alerts.py</code></li>
-                    <li>✓ <code>classification/confidence.py</code></li>
-                    <li>✓ Full unit test suite</li>
-                </ul>
-            </div>
-
-            <div style="background: #f8f9fa; padding: 25px; border-left: 4px solid #667eea; margin: 20px 0;">
-                <h3 style="color: #667eea;">Week 3: Batch Processor & CLI</h3>
-                <p><strong>Goal:</strong> Process SAMPLE.xlsx and generate review reports</p>
-                <ul style="color: #666;">
-                    <li>Build batch processor for Excel files</li>
-                    <li>Create CLI interface for manual runs</li>
-                    <li>Implement review report generator (Excel output)</li>
-                    <li>Process SAMPLE.xlsx (all 4 months: 15,072 invoice lines)</li>
-                    <li>Store results in classification_history table</li>
-                    <li>Generate admin alerts for non-IT vendors</li>
-                </ul>
-                <p><strong>Deliverables:</strong></p>
-                <ul style="color: #666;">
-                    <li>✓ <code>classification/batch/processor.py</code></li>
-                    <li>✓ <code>scripts/classify_invoices.py</code> CLI</li>
-                    <li>✓ <code>classification/batch/reporter.py</code></li>
-                    <li>✓ Classified SAMPLE.xlsx with confidence scores</li>
-                    <li>✓ Review report Excel file (4 sheets)</li>
-                </ul>
-            </div>
-
-            <div style="background: #f8f9fa; padding: 25px; border-left: 4px solid #764ba2; margin: 20px 0;">
-                <h3 style="color: #764ba2;">Week 4: Testing & Iteration</h3>
-                <p><strong>Goal:</strong> Validate accuracy and fine-tune thresholds</p>
-                <ul style="color: #666;">
-                    <li>Review auto-assigned codes (≥70% confidence)</li>
-                    <li>Validate admin alerts (non-IT vendors)</li>
-                    <li>Test suggestion quality (20-70% confidence band)</li>
-                    <li>Fine-tune confidence thresholds</li>
-                    <li>Add missing keyword rules</li>
-                    <li>Performance testing (batch 3,768 lines)</li>
-                </ul>
-                <p><strong>Success Metrics:</strong></p>
-                <ul style="color: #666;">
-                    <li>✓ Auto-assignment rate ≥60%</li>
-                    <li>✓ Accuracy on validation sample ≥95%</li>
-                    <li>✓ Admin alert precision ≥80%</li>
-                    <li>✓ Top-3 suggestions contain correct code ≥85%</li>
-                    <li>✓ Batch processing time &lt;4 hours for quarterly data</li>
-                </ul>
-            </div>
-
-            <div style="background: #f8f9fa; padding: 25px; border-left: 4px solid #667eea; margin: 20px 0;">
-                <h3 style="color: #667eea;">Week 5: Feedback Loop & Production Prep</h3>
-                <p><strong>Goal:</strong> Implement learning system and prepare for production</p>
-                <ul style="color: #666;">
-                    <li>Build manual override handling</li>
-                    <li>Implement admin approval workflow</li>
-                    <li>Create feedback loop (corrections → mappings)</li>
-                    <li>Re-run batch processor to validate improvements</li>
-                    <li>Write user documentation</li>
-                    <li>Prepare deployment package</li>
-                </ul>
-                <p><strong>Deliverables:</strong></p>
-                <ul style="color: #666;">
-                    <li>✓ <code>scripts/admin_review.py</code> CLI tool</li>
-                    <li>✓ <code>classification/feedback_loop.py</code></li>
-                    <li>✓ Updated supplier_activity_mappings from corrections</li>
-                    <li>✓ User guide documentation</li>
-                    <li>✓ Deployment instructions</li>
-                    <li>✓ Production-ready package</li>
-                </ul>
-            </div>
-        </section>
-
-        <section style="margin-bottom: 40px;">
-            <h2 style="color: #667eea; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">Resource Requirements</h2>
-            <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-                <thead>
-                    <tr style="background: #667eea; color: white;">
-                        <th style="padding: 12px; text-align: left;">Role</th>
-                        <th style="padding: 12px; text-align: left;">Time Commitment</th>
-                        <th style="padding: 12px; text-align: left;">Responsibilities</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="border-bottom: 1px solid #e0e0e0;">
-                        <td style="padding: 12px;"><strong>Backend Developer</strong></td>
-                        <td style="padding: 12px;">Full-time (5 weeks)</td>
-                        <td style="padding: 12px;">Classification engine, database, testing</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #e0e0e0;">
-                        <td style="padding: 12px;"><strong>Finance SME</strong></td>
-                        <td style="padding: 12px;">Part-time (5-10 hrs/week)</td>
-                        <td style="padding: 12px;">Validate classifications, review reports, define rules</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #e0e0e0;">
-                        <td style="padding: 12px;"><strong>DevOps Engineer</strong></td>
-                        <td style="padding: 12px;">Part-time (Week 5)</td>
-                        <td style="padding: 12px;">Deployment, scheduling (if batch job needed)</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #e0e0e0;">
-                        <td style="padding: 12px;"><strong>QA Engineer</strong></td>
-                        <td style="padding: 12px;">Part-time (Week 4)</td>
-                        <td style="padding: 12px;">Test accuracy, edge cases, performance testing</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section style="margin-bottom: 40px;">
-            <h2 style="color: #667eea; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">Milestones & Gates</h2>
-            <ul style="color: #666;">
-                <li><strong>Week 1 Gate:</strong> Database populated with 59 activity codes and 40+ historical mappings</li>
-                <li><strong>Week 3 Gate:</strong> SAMPLE.xlsx successfully processed with ≥50% auto-assignment rate</li>
-                <li><strong>Week 4 Gate:</strong> Validation sample shows ≥90% accuracy on auto-assigned codes</li>
-                <li><strong>Week 5 Gate:</strong> Feedback loop demonstrates accuracy improvement from corrections</li>
-            </ul>
-        </section>
-
-        <section style="margin-bottom: 40px;">
-            <h2 style="color: #667eea; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">Risks & Mitigation</h2>
-            <ul style="color: #666;">
-                <li><strong>Risk:</strong> Classification accuracy below target (≥95%)<br>
-                    <strong>Mitigation:</strong> Week 4 dedicated to fine-tuning. Can adjust confidence thresholds to increase precision at cost of auto-assignment rate.</li>
-                <li><strong>Risk:</strong> Performance issues with large batches<br>
-                    <strong>Mitigation:</strong> Use pandas for efficient DataFrame operations. Add multiprocessing if needed.</li>
-                <li><strong>Risk:</strong> Non-IT vendors not flagged correctly<br>
-                    <strong>Mitigation:</strong> Conservative keyword list with admin alert workflow. Can expand keywords iteratively.</li>
-                <li><strong>Risk:</strong> Development delays<br>
-                    <strong>Mitigation:</strong> Phased approach allows early value (CLI) even if MCP integration is delayed.</li>
-            </ul>
-        </section>
-
-        <section style="margin-bottom: 40px;">
-            <h2 style="color: #667eea; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">Post-Launch Plan</h2>
-            <h3 style="color: #764ba2;">Month 1-3: Monitoring & Tuning</h3>
-            <ul style="color: #666;">
-                <li>Weekly review of admin alerts and manual corrections</li>
-                <li>Track accuracy metrics on production data</li>
-                <li>Expand keyword rules based on misclassifications</li>
-                <li>Fine-tune confidence thresholds if needed</li>
-            </ul>
-
-            <h3 style="color: #764ba2;">Month 3-6: Optimization</h3>
-            <ul style="color: #666;">
-                <li>Implement MCP tool integration (if not in initial phase)</li>
-                <li>Add scheduled batch job automation</li>
-                <li>Build admin approval UI (if demand exists)</li>
-                <li>Performance optimization for >10K invoice batches</li>
-            </ul>
-
-            <h3 style="color: #764ba2;">Month 6+: Enhancement</h3>
-            <ul style="color: #666;">
-                <li>LLM-based classification for ambiguous cases (optional)</li>
-                <li>Real-time classification via Coupa webhooks</li>
-                <li>Vendor scoring system (phase 2 of project)</li>
-                <li>Predictive analytics (spend forecasting, vendor risk)</li>
-            </ul>
-        </section>
-
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 8px; text-align: center;">
-            <h3 style="color: white; font-size: 1.8em;">Ready to Start?</h3>
-            <p style="font-size: 1.1em; margin-top: 15px;">Contact the development team to kick off Phase 1</p>
+        <div class="breadcrumb">
+            <a href="index.html">← Back to Overview</a>
         </div>
 
-        <p style="margin-top: 40px;"><a href="user-guide.html" style="color: #667eea;">→ Next: User Guide</a></p>
-    </div>
+        <div class="content">
+            <div class="section">
+                <h2>Phase-by-Phase Breakdown</h2>
 
-    <footer style="background: #2c3e50; color: white; padding: 20px; text-align: center; border-radius: 0 0 10px 10px; margin-top: 40px;">
-        <p><a href="index.html" style="color: white;">Back to Overview</a></p>
-    </footer>
+                <div class="phase-box">
+                    <h3 style="color: #667eea;">Week 1: Database & Data Loading</h3>
+                    <p><strong>Goal:</strong> Establish database foundation and load historical data</p>
+                    <ul>
+                        <li>Create SQLite schema (5 tables)</li>
+                        <li>Load Activity Codes_Active sheet → <code>activity_codes</code> table</li>
+                        <li>Parse pipe-delimited supplier names → <code>supplier_activity_mappings</code></li>
+                        <li>Write database unit tests</li>
+                        <li>Create data loading script</li>
+                    </ul>
+                    <p><strong>Deliverables:</strong></p>
+                    <ul>
+                        <li>✓ <code>classification/database.py</code> with SQLAlchemy models</li>
+                        <li>✓ <code>scripts/load_activity_codes.py</code></li>
+                        <li>✓ Populated SQLite database with 59 activity codes</li>
+                        <li>✓ 40+ supplier-to-code historical mappings</li>
+                    </ul>
+                </div>
+
+                <div class="phase-box alt">
+                    <h3 style="color: #764ba2;">Week 2-3: Classification Engine</h3>
+                    <p><strong>Goal:</strong> Build core classification logic with all matchers</p>
+                    <ul>
+                        <li>Implement fuzzy matcher (RapidFuzz)</li>
+                        <li>Build keyword matcher (commodity + description)</li>
+                        <li>Create non-IT vendor detector with admin alert logic</li>
+                        <li>Implement confidence scoring algorithms</li>
+                        <li>Build classification engine orchestrator</li>
+                        <li>Write comprehensive unit tests (≥90% coverage)</li>
+                    </ul>
+                    <p><strong>Deliverables:</strong></p>
+                    <ul>
+                        <li>✓ <code>classification/engine.py</code> - main classification logic</li>
+                        <li>✓ <code>classification/matchers/fuzzy_matcher.py</code></li>
+                        <li>✓ <code>classification/matchers/keyword_matcher.py</code></li>
+                        <li>✓ <code>classification/admin_alerts.py</code></li>
+                        <li>✓ <code>classification/confidence.py</code></li>
+                        <li>✓ Full unit test suite</li>
+                    </ul>
+                </div>
+
+                <div class="phase-box">
+                    <h3 style="color: #667eea;">Week 3: Batch Processor & CLI</h3>
+                    <p><strong>Goal:</strong> Process SAMPLE.xlsx and generate review reports</p>
+                    <ul>
+                        <li>Build batch processor for Excel files</li>
+                        <li>Create CLI interface for manual runs</li>
+                        <li>Implement review report generator (Excel output)</li>
+                        <li>Process SAMPLE.xlsx (all 4 months: 15,072 invoice lines)</li>
+                        <li>Store results in classification_history table</li>
+                        <li>Generate admin alerts for non-IT vendors</li>
+                    </ul>
+                    <p><strong>Deliverables:</strong></p>
+                    <ul>
+                        <li>✓ <code>classification/batch/processor.py</code></li>
+                        <li>✓ <code>scripts/classify_invoices.py</code> CLI</li>
+                        <li>✓ <code>classification/batch/reporter.py</code></li>
+                        <li>✓ Classified SAMPLE.xlsx with confidence scores</li>
+                        <li>✓ Review report Excel file (4 sheets)</li>
+                    </ul>
+                </div>
+
+                <div class="phase-box alt">
+                    <h3 style="color: #764ba2;">Week 4: Testing & Iteration</h3>
+                    <p><strong>Goal:</strong> Validate accuracy and fine-tune thresholds</p>
+                    <ul>
+                        <li>Review auto-assigned codes (≥70% confidence)</li>
+                        <li>Validate admin alerts (non-IT vendors)</li>
+                        <li>Test suggestion quality (20-70% confidence band)</li>
+                        <li>Fine-tune confidence thresholds</li>
+                        <li>Add missing keyword rules</li>
+                        <li>Performance testing (batch 3,768 lines)</li>
+                    </ul>
+                    <p><strong>Success Metrics:</strong></p>
+                    <ul>
+                        <li>✓ Auto-assignment rate ≥60%</li>
+                        <li>✓ Accuracy on validation sample ≥95%</li>
+                        <li>✓ Admin alert precision ≥80%</li>
+                        <li>✓ Top-3 suggestions contain correct code ≥85%</li>
+                        <li>✓ Batch processing time &lt;4 hours for quarterly data</li>
+                    </ul>
+                </div>
+
+                <div class="phase-box">
+                    <h3 style="color: #667eea;">Week 5: Feedback Loop & Production Prep</h3>
+                    <p><strong>Goal:</strong> Implement learning system and prepare for production</p>
+                    <ul>
+                        <li>Build manual override handling</li>
+                        <li>Implement admin approval workflow</li>
+                        <li>Create feedback loop (corrections → mappings)</li>
+                        <li>Re-run batch processor to validate improvements</li>
+                        <li>Write user documentation</li>
+                        <li>Prepare deployment package</li>
+                    </ul>
+                    <p><strong>Deliverables:</strong></p>
+                    <ul>
+                        <li>✓ <code>scripts/admin_review.py</code> CLI tool</li>
+                        <li>✓ <code>classification/feedback_loop.py</code></li>
+                        <li>✓ Updated supplier_activity_mappings from corrections</li>
+                        <li>✓ User guide documentation</li>
+                        <li>✓ Deployment instructions</li>
+                        <li>✓ Production-ready package</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Resource Requirements</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Role</th>
+                            <th>Time Commitment</th>
+                            <th>Responsibilities</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Backend Developer</strong></td>
+                            <td>Full-time (5 weeks)</td>
+                            <td>Classification engine, database, testing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Finance SME</strong></td>
+                            <td>Part-time (5-10 hrs/week)</td>
+                            <td>Validate classifications, review reports, define rules</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DevOps Engineer</strong></td>
+                            <td>Part-time (Week 5)</td>
+                            <td>Deployment, scheduling (if batch job needed)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>QA Engineer</strong></td>
+                            <td>Part-time (Week 4)</td>
+                            <td>Test accuracy, edge cases, performance testing</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>Milestones & Gates</h2>
+                <ul>
+                    <li><strong>Week 1 Gate:</strong> Database populated with 59 activity codes and 40+ historical mappings</li>
+                    <li><strong>Week 3 Gate:</strong> SAMPLE.xlsx successfully processed with ≥50% auto-assignment rate</li>
+                    <li><strong>Week 4 Gate:</strong> Validation sample shows ≥90% accuracy on auto-assigned codes</li>
+                    <li><strong>Week 5 Gate:</strong> Feedback loop demonstrates accuracy improvement from corrections</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Risks & Mitigation</h2>
+                <ul>
+                    <li><strong>Risk:</strong> Classification accuracy below target (≥95%)<br>
+                        <strong>Mitigation:</strong> Week 4 dedicated to fine-tuning. Can adjust confidence thresholds to increase precision at cost of auto-assignment rate.</li>
+                    <li><strong>Risk:</strong> Performance issues with large batches<br>
+                        <strong>Mitigation:</strong> Use pandas for efficient DataFrame operations. Add multiprocessing if needed.</li>
+                    <li><strong>Risk:</strong> Non-IT vendors not flagged correctly<br>
+                        <strong>Mitigation:</strong> Conservative keyword list with admin alert workflow. Can expand keywords iteratively.</li>
+                    <li><strong>Risk:</strong> Development delays<br>
+                        <strong>Mitigation:</strong> Phased approach allows early value (CLI) even if MCP integration is delayed.</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Post-Launch Plan</h2>
+                <h3>Month 1-3: Monitoring & Tuning</h3>
+                <ul>
+                    <li>Weekly review of admin alerts and manual corrections</li>
+                    <li>Track accuracy metrics on production data</li>
+                    <li>Expand keyword rules based on misclassifications</li>
+                    <li>Fine-tune confidence thresholds if needed</li>
+                </ul>
+
+                <h3>Month 3-6: Optimization</h3>
+                <ul>
+                    <li>Implement MCP tool integration (if not in initial phase)</li>
+                    <li>Add scheduled batch job automation</li>
+                    <li>Build admin approval UI (if demand exists)</li>
+                    <li>Performance optimization for >10K invoice batches</li>
+                </ul>
+
+                <h3>Month 6+: Enhancement</h3>
+                <ul>
+                    <li>LLM-based classification for ambiguous cases (optional)</li>
+                    <li>Real-time classification via Coupa webhooks</li>
+                    <li>Vendor scoring system (phase 2 of project)</li>
+                    <li>Predictive analytics (spend forecasting, vendor risk)</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Ready to Start?</h3>
+                <p>Contact the development team to kick off Phase 1</p>
+            </div>
+
+            <p style="margin-top: 40px;"><strong>Next:</strong> <a href="user-guide.html" style="color: #667eea; font-weight: bold;">User Guide →</a></p>
+        </div>
+
+        <footer>
+            <p><a href="index.html">← Back to Overview</a> | <a href="user-guide.html">User Guide →</a></p>
+        </footer>
+    </div>
 </body>
 </html>
