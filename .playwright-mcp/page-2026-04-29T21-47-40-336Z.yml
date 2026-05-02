@@ -1,0 +1,338 @@
+- generic [active] [ref=e1]:
+  - generic:
+    - generic:
+      - link "Skip to main content" [ref=e2] [cursor=pointer]
+      - link "Accessibility help" [ref=e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=en
+      - link "Accessibility feedback" [ref=e4] [cursor=pointer]
+  - generic [ref=e9]:
+    - search [ref=e10]:
+      - generic [ref=e12]:
+        - link "Go to Google Home" [ref=e14] [cursor=pointer]:
+          - /url: https://www.google.com/webhp?hl=en&sa=X&ved=0ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQPAgJ
+          - img [ref=e15]
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - combobox "Search" [ref=e26]: Mike Smolko USA Financial LinkedIn Mike Smolko USA Financial LinkedIn
+            - generic [ref=e27]:
+              - button "Clear" [ref=e29] [cursor=pointer]:
+                - img [ref=e31]
+              - generic [ref=e34]:
+                - button "Search by voice" [ref=e35] [cursor=pointer]:
+                  - img [ref=e36]
+                - button "Search by image" [ref=e38] [cursor=pointer]:
+                  - img [ref=e39]
+          - button "Search" [ref=e41] [cursor=pointer]:
+            - img [ref=e44]
+    - generic [ref=e46]:
+      - button "Settings" [ref=e48] [cursor=pointer]:
+        - img [ref=e51]
+      - generic [ref=e54]:
+        - button "Google apps" [ref=e56] [cursor=pointer]:
+          - img [ref=e57]
+        - link "Sign in" [ref=e61] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/search%3Fq%3DMike%2BSmolko%2BUSA%2BFinancial%2BLinkedIn%26sei%3De3zyaYXdBfmGqtsP696V-Qw&ec=futura_srp_og_si_72236_p
+  - generic [ref=e63]:
+    - navigation [ref=e69]:
+      - generic [ref=e75]:
+        - list [ref=e76]:
+          - listitem [ref=e77]:
+            - link "AI Mode" [ref=e80] [cursor=pointer]:
+              - /url: /search?q=Mike+Smolko+USA+Financial+LinkedIn&sca_esv=d3b625d2bcd07c3a&udm=50&fbs=ADc_l-aN0CWEZBOHjofHoaMMDiKpaEWjvZ2Py1XXV8d8KvlI3ppPEReeCOS7s1VbbZz2TLutTM8bcskdZ5Z5EWAFJPjTghF9mS0qmGrv36U8kfuC6op4K1f-9omm4nqI6dtF1NWNqrLgE2q7WKnT8tmiJ1_2q07yaH-5rr-zaU0ZbgyLc7KYK29-3ZznnsryPf4JXOsgrXDY3JfkHzHn0Jfi1wYSRRx2NA&aep=1&ntc=1&sa=X&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ2J8OegQIDBAI
+              - generic [ref=e83]: AI Mode
+          - listitem [ref=e84]:
+            - link "All" [disabled] [ref=e85]:
+              - generic [ref=e87]: All
+          - listitem [ref=e88]:
+            - link "Images" [ref=e89] [cursor=pointer]:
+              - /url: /search?sca_esv=d3b625d2bcd07c3a&udm=2&fbs=ADc_l-aN0CWEZBOHjofHoaMMDiKpaEWjvZ2Py1XXV8d8KvlI3ppPEReeCOS7s1VbbZz2TLutTM8bcskdZ5Z5EWAFJPjTghF9mS0qmGrv36U8kfuC6op4K1f-9omm4nqI6dtF1NWNqrLgE2q7WKnT8tmiJ1_2q07yaH-5rr-zaU0ZbgyLc7KYK29-3ZznnsryPf4JXOsgrXDY3JfkHzHn0Jfi1wYSRRx2NA&q=Mike+Smolko+USA+Financial+LinkedIn&sa=X&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQtKgLegQIDhAB
+              - generic [ref=e91]: Images
+          - listitem [ref=e92]:
+            - link "News" [ref=e93] [cursor=pointer]:
+              - /url: /search?sca_esv=d3b625d2bcd07c3a&q=Mike+Smolko+USA+Financial+LinkedIn&tbm=nws&source=lnms&fbs=ADc_l-aN0CWEZBOHjofHoaMMDiKpaEWjvZ2Py1XXV8d8KvlI3ppPEReeCOS7s1VbbZz2TLutTM8bcskdZ5Z5EWAFJPjTghF9mS0qmGrv36U8kfuC6op4K1f-9omm4nqI6dtF1NWNqrLgE2q7WKnT8tmiJ1_2q07yaH-5rr-zaU0ZbgyLc7KYK29-3ZznnsryPf4JXOsgrXDY3JfkHzHn0Jfi1wYSRRx2NA&sa=X&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ0pQJegQIDxAB
+              - generic [ref=e95]: News
+          - listitem [ref=e96]:
+            - link "Videos" [ref=e97] [cursor=pointer]:
+              - /url: /search?sca_esv=d3b625d2bcd07c3a&udm=7&fbs=ADc_l-aN0CWEZBOHjofHoaMMDiKpaEWjvZ2Py1XXV8d8KvlI3ppPEReeCOS7s1VbbZz2TLutTM8bcskdZ5Z5EWAFJPjTghF9mS0qmGrv36U8kfuC6op4K1f-9omm4nqI6dtF1NWNqrLgE2q7WKnT8tmiJ1_2q07yaH-5rr-zaU0ZbgyLc7KYK29-3ZznnsryPf4JXOsgrXDY3JfkHzHn0Jfi1wYSRRx2NA&q=Mike+Smolko+USA+Financial+LinkedIn&sa=X&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQtKgLegQIEBAB
+              - generic [ref=e99]: Videos
+          - listitem [ref=e100]:
+            - link "Forums" [ref=e101] [cursor=pointer]:
+              - /url: /search?sca_esv=d3b625d2bcd07c3a&udm=18&fbs=ADc_l-aN0CWEZBOHjofHoaMMDiKpaEWjvZ2Py1XXV8d8KvlI3ppPEReeCOS7s1VbbZz2TLutTM8bcskdZ5Z5EWAFJPjTghF9mS0qmGrv36U8kfuC6op4K1f-9omm4nqI6dtF1NWNqrLgE2q7WKnT8tmiJ1_2q07yaH-5rr-zaU0ZbgyLc7KYK29-3ZznnsryPf4JXOsgrXDY3JfkHzHn0Jfi1wYSRRx2NA&q=Mike+Smolko+USA+Financial+LinkedIn&sa=X&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQs6gLegQIERAB
+              - generic [ref=e103]: Forums
+          - listitem [ref=e104]:
+            - link "Shopping" [ref=e105] [cursor=pointer]:
+              - /url: /search?sca_esv=d3b625d2bcd07c3a&udm=28&fbs=ADc_l-aN0CWEZBOHjofHoaMMDiKpaEWjvZ2Py1XXV8d8KvlI3ppPEReeCOS7s1VbbZz2TLutTM8bcskdZ5Z5EWAFJPjTghF9mS0qmGrv36U8kfuC6op4K1f-9omm4nqI6dtF1NWNqrLgE2q7WKnT8tmiJ1_2q07yaH-5rr-zaU0ZbgyLc7KYK29-3ZznnsryPf4JXOsgrXDY3JfkHzHn0Jfi1wYSRRx2NA&q=Mike+Smolko+USA+Financial+LinkedIn&ved=1t:220175&ictx=111
+              - generic [ref=e107]: Shopping
+          - listitem [ref=e108]:
+            - button "More filters" [ref=e109] [cursor=pointer]:
+              - generic "More filters" [ref=e110]:
+                - generic [ref=e111]:
+                  - generic [ref=e112]: More
+                  - img [ref=e114]
+        - button "Tools" [ref=e117] [cursor=pointer]:
+          - generic [ref=e119]:
+            - generic [ref=e120]: Tools
+            - img [ref=e122]
+    - heading "Search Results" [level=1] [ref=e124]
+    - main [ref=e130]:
+      - generic [ref=e134]:
+        - generic [ref=e137]:
+          - heading "Web results" [level=2] [ref=e138]
+          - generic [ref=e139]:
+            - generic [ref=e142]:
+              - link "Mike Smolko - Tahoma Advisory Group LinkedIn · Mike Smolko 500+ followers" [ref=e144] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/mike-smolko
+                - heading "Mike Smolko - Tahoma Advisory Group" [level=3] [ref=e145]
+                - generic [ref=e150]:
+                  - generic [ref=e152]: LinkedIn · Mike Smolko
+                  - generic [ref=e154]: 500+ followers
+              - button "About this result" [ref=e155] [cursor=pointer]:
+                - img [ref=e158]
+            - generic [ref=e160]:
+              - generic [ref=e161]: Tacoma, Washington, United States · Tahoma Advisory Group
+              - generic [ref=e163]:
+                - emphasis [ref=e164]: Mike Smolko is an investment adviser representative
+                - text: "of, and securities and advisory… · Experience: Tahoma Advisory Group · Education: Pacific Lutheran ..."
+        - generic [ref=e168]:
+          - generic [ref=e171]:
+            - link "9 \"Michael Smolko\" profiles LinkedIn https://www.linkedin.com › pub › dir › Michael › Smolko" [ref=e173] [cursor=pointer]:
+              - /url: https://www.linkedin.com/pub/dir/Michael/Smolko
+              - heading "9 \"Michael Smolko\" profiles" [level=3] [ref=e174]
+              - generic [ref=e179]:
+                - generic [ref=e181]: LinkedIn
+                - generic [ref=e183]: https://www.linkedin.com › pub › dir › Michael › Smolko
+            - button "About this result" [ref=e184] [cursor=pointer]:
+              - img [ref=e187]
+          - generic [ref=e190]:
+            - generic [ref=e191]:
+              - text: Mike Smolko.
+              - emphasis [ref=e192]: Financial Adviser at Tahoma Advisory Group, LLC
+              - text: . Tacoma, WA. Tahoma Advisory Group, +3 more. Pacific Lutheran University - School of ...
+            - link "Read more" [ref=e193] [cursor=pointer]:
+              - /url: https://www.linkedin.com/pub/dir/Michael/Smolko#:~:text=Mike%20Smolko,School%20of%20Business%2C%20%2B2%20more
+          - generic [ref=e195]:
+            - text: "Missing: USA ‎| Show results with:"
+            - link "USA" [ref=e196] [cursor=pointer]:
+              - /url: /search?sca_esv=d3b625d2bcd07c3a&q=Mike+Smolko+%22USA%22+Financial+LinkedIn&sa=X&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ5t4CegQILhAB
+        - generic [ref=e200]:
+          - generic [ref=e203]:
+            - link "Michael Smolko - Redwood Living LinkedIn · Michael Smolko 780+ followers" [ref=e205] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/michael-smolko-054b0410b
+              - heading "Michael Smolko - Redwood Living" [level=3] [ref=e206]
+              - generic [ref=e211]:
+                - generic [ref=e213]: LinkedIn · Michael Smolko
+                - generic [ref=e215]: 780+ followers
+            - button "About this result" [ref=e216] [cursor=pointer]:
+              - img [ref=e219]
+          - generic [ref=e221]:
+            - generic [ref=e222]: Cleveland, Ohio, United States · Redwood Living
+            - generic [ref=e224]:
+              - text: "Experience:"
+              - emphasis [ref=e225]: Redwood Living
+              - text: "· Education: John Carroll University · Location: Cleveland · 500+ connections on LinkedIn. View Michael Smolko's profile on ..."
+          - generic [ref=e227]:
+            - text: "Missing: Mike ‎| Show results with:"
+            - link "Mike" [ref=e228] [cursor=pointer]:
+              - /url: /search?sca_esv=d3b625d2bcd07c3a&q=%22Mike%22+Smolko+USA+Financial+LinkedIn&sa=X&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ5t4CegQILBAB
+        - generic [ref=e232]:
+          - generic [ref=e235]:
+            - link "500+ \"Smolko\" profiles LinkedIn https://www.linkedin.com › pub › dir › Smolko" [ref=e237] [cursor=pointer]:
+              - /url: https://www.linkedin.com/pub/dir/+/Smolko
+              - heading "500+ \"Smolko\" profiles" [level=3] [ref=e238]
+              - generic [ref=e243]:
+                - generic [ref=e245]: LinkedIn
+                - generic [ref=e247]: https://www.linkedin.com › pub › dir › Smolko
+            - button "About this result" [ref=e248] [cursor=pointer]:
+              - img [ref=e251]
+          - generic [ref=e254]:
+            - generic [ref=e255]:
+              - text: Michael Smolko.
+              - emphasis [ref=e256]: Chief executive in the investment-building projects
+              - text: and projects in the sphere of alternative energy engineering. St Petersburg.
+            - link "Read more" [ref=e257] [cursor=pointer]:
+              - /url: https://www.linkedin.com/pub/dir/+/Smolko#:~:text=Michael%20Smolko,St%20Petersburg
+          - generic [ref=e259]:
+            - text: "Missing: Mike ‎| Show results with:"
+            - link "Mike" [ref=e260] [cursor=pointer]:
+              - /url: /search?sca_esv=d3b625d2bcd07c3a&q=%22Mike%22+Smolko+USA+Financial+LinkedIn&sa=X&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ5t4CegQILRAB
+        - generic [ref=e264]:
+          - generic [ref=e267]:
+            - link "Michael Smolko Tahoma Advisory Group https://www.tahomaadvisorygroup.com › team › michael..." [ref=e269] [cursor=pointer]:
+              - /url: https://www.tahomaadvisorygroup.com/team/michael-smolko
+              - heading "Michael Smolko" [level=3] [ref=e270]
+              - generic [ref=e275]:
+                - generic [ref=e277]: Tahoma Advisory Group
+                - generic [ref=e279]: https://www.tahomaadvisorygroup.com › team › michael...
+            - button "About this result" [ref=e280] [cursor=pointer]:
+              - img [ref=e283]
+          - generic [ref=e286]:
+            - generic [ref=e287]:
+              - emphasis [ref=e288]: Mike Smolko is the owner and Financial Advisor at Tahoma Advisory Group
+              - text: . He is deeply committed to helping clients navigate their financial journeys.
+            - link "Read more" [ref=e289] [cursor=pointer]:
+              - /url: https://www.tahomaadvisorygroup.com/team/michael-smolko#:~:text=Mike%20Smolko%20is%20the%20owner,with%20clarity%2C%20purpose%2C%20and%20confidence.
+          - generic [ref=e291]:
+            - text: "Missing: LinkedIn ‎| Show results with:"
+            - link "LinkedIn" [ref=e292] [cursor=pointer]:
+              - /url: /search?sca_esv=d3b625d2bcd07c3a&q=Mike+Smolko+USA+Financial+%22LinkedIn%22&sa=X&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ5t4CegQIKxAB
+        - generic [ref=e296]:
+          - generic [ref=e299]:
+            - link "Matt Smolko - LifeSpeak Inc. LinkedIn · Matt Smolko 920+ followers" [ref=e301] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/matt-smolko-a64070b
+              - heading "Matt Smolko - LifeSpeak Inc." [level=3] [ref=e302]
+              - generic [ref=e307]:
+                - generic [ref=e309]: LinkedIn · Matt Smolko
+                - generic [ref=e311]: 920+ followers
+            - button "About this result" [ref=e312] [cursor=pointer]:
+              - img [ref=e315]
+          - generic [ref=e317]:
+            - generic [ref=e318]: Cleveland, Ohio, United States · LifeSpeak Inc.
+            - generic [ref=e319]: "15 years of experience in B2B SasS organizations with the last +11 years in the CFO… · Experience: LifeSpeak Inc. · Location: Cleveland · 500+ connections ..."
+          - generic [ref=e321]:
+            - text: "Missing: Mike ‎| Show results with:"
+            - link "Mike" [ref=e322] [cursor=pointer]:
+              - /url: /search?sca_esv=d3b625d2bcd07c3a&q=%22Mike%22+Smolko+USA+Financial+LinkedIn&sa=X&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ5t4CegQIKhAB
+        - generic [ref=e326]:
+          - generic [ref=e329]:
+            - link "A feedback loop between heterochromatin and the ... - PMC PubMed Central (PMC) (.gov) https://pmc.ncbi.nlm.nih.gov › articles › PMC11301765" [ref=e331] [cursor=pointer]:
+              - /url: https://pmc.ncbi.nlm.nih.gov/articles/PMC11301765/
+              - heading "A feedback loop between heterochromatin and the ... - PMC" [level=3] [ref=e332]
+              - generic [ref=e337]:
+                - generic [ref=e339]: PubMed Central (PMC) (.gov)
+                - generic [ref=e341]: https://pmc.ncbi.nlm.nih.gov › articles › PMC11301765
+            - button "About this result" [ref=e342] [cursor=pointer]:
+              - img [ref=e345]
+          - generic [ref=e348]:
+            - generic [ref=e349]: by K Sarkar · 2023 · Cited by 16 —
+            - text: A feedback loop between heterochromatin and NPCs promotes transcriptional reprogramming at the onset of oocyte specification that is critical to establish ...
+            - link "Read more" [ref=e350] [cursor=pointer]:
+              - /url: https://pmc.ncbi.nlm.nih.gov/articles/PMC11301765/#:~:text=Thus%2C%20a%20feedback%20loop%20between,critical%20to%20establish%20oocyte%20identity.
+        - generic [ref=e354]:
+          - generic [ref=e357]:
+            - link "Citi Facebook · Citi 30+ reactions · 2 weeks ago" [ref=e359] [cursor=pointer]:
+              - /url: https://www.facebook.com/citi/posts/citi-celebrates-the-rich-heritages-cultures-and-perspectives-of-our-global-workf/1279139664360388/
+              - heading "Citi" [level=3] [ref=e360]
+              - generic [ref=e365]:
+                - generic [ref=e367]: Facebook · Citi
+                - generic [ref=e369]: 30+ reactions · 2 weeks ago
+            - button "About this result" [ref=e370] [cursor=pointer]:
+              - img [ref=e373]
+          - generic [ref=e376]:
+            - generic [ref=e377]:
+              - emphasis [ref=e378]: Citi
+              - text: celebrates the rich heritages, cultures and perspectives of our global workforce, and recognizes the many ways we learn from one another.
+            - link "Read more" [ref=e379] [cursor=pointer]:
+              - /url: https://www.facebook.com/citi/posts/citi-celebrates-the-rich-heritages-cultures-and-perspectives-of-our-global-workf/1279139664360388/#:~:text=Citi%20celebrates%20the%20rich%20heritages%2C,we%20learn%20from%20one%20another.
+        - generic [ref=e383]:
+          - generic [ref=e386]:
+            - link "Why did I make almost exactly the same amount of money ... Instagram · ahmadmunawarhq 2 weeks ago" [ref=e388] [cursor=pointer]:
+              - /url: https://www.instagram.com/p/DXKUt8ZDeVM/
+              - heading "Why did I make almost exactly the same amount of money ..." [level=3] [ref=e389]
+              - generic [ref=e394]:
+                - generic [ref=e396]: Instagram · ahmadmunawarhq
+                - generic [ref=e398]: 2 weeks ago
+            - button "About this result" [ref=e399] [cursor=pointer]:
+              - img [ref=e402]
+          - generic [ref=e405]:
+            - generic [ref=e406]:
+              - text: A new client came to
+              - emphasis [ref=e407]: us
+              - text: last year with $1.2M in revenue. One client was 60% of his sales.
+            - link "Read more" [ref=e408] [cursor=pointer]:
+              - /url: https://www.instagram.com/p/DXKUt8ZDeVM/#:~:text=A%20new%20client%20came%20to,was%2060%25%20of%20his%20sales.
+        - generic [ref=e412]:
+          - heading "Images" [level=2] [ref=e416]
+          - generic [ref=e420]:
+            - generic [ref=e424] [cursor=pointer]:
+              - link "Thomas Smolko - ORO Labs | LinkedIn LinkedIn":
+                - /url: https://www.linkedin.com/in/smolko
+              - button "Thomas Smolko - ORO Labs | LinkedIn" [ref=e426]:
+                - img "Thomas Smolko - ORO Labs | LinkedIn" [ref=e428]
+              - generic [ref=e430]:
+                - generic [ref=e432]: Thomas Smolko - ORO Labs | LinkedIn
+                - generic [ref=e433]:
+                  - generic [ref=e440]: LinkedIn
+                  - button "About this result" [ref=e443]:
+                    - img [ref=e446]
+            - generic [ref=e451] [cursor=pointer]:
+              - link "Ryan Smolko - Financial Advisor | LinkedIn LinkedIn":
+                - /url: https://www.linkedin.com/in/ryan-smolko-334640175
+              - button "Ryan Smolko - Financial Advisor | LinkedIn" [ref=e453]:
+                - img "Ryan Smolko - Financial Advisor | LinkedIn" [ref=e455]
+              - generic [ref=e457]:
+                - generic [ref=e459]: Ryan Smolko - Financial Advisor | LinkedIn
+                - generic [ref=e460]:
+                  - generic [ref=e467]: LinkedIn
+                  - button "About this result" [ref=e470]:
+                    - img [ref=e473]
+            - generic [ref=e478] [cursor=pointer]:
+              - link "Melissa Smolko - ImprovEdge | LinkedIn LinkedIn":
+                - /url: https://www.linkedin.com/in/msmolko
+              - button "Melissa Smolko - ImprovEdge | LinkedIn" [ref=e480]:
+                - img "Melissa Smolko - ImprovEdge | LinkedIn" [ref=e482]
+              - generic [ref=e484]:
+                - generic [ref=e486]: Melissa Smolko - ImprovEdge | LinkedIn
+                - generic [ref=e487]:
+                  - generic [ref=e494]: LinkedIn
+                  - button "About this result" [ref=e497]:
+                    - img [ref=e500]
+          - button "Show more images" [ref=e503] [cursor=pointer]:
+            - separator [ref=e504]
+            - generic [ref=e505]:
+              - generic [ref=e506]: Show more images
+              - img [ref=e508]
+      - navigation [ref=e512]:
+        - heading "Page Navigation" [level=1] [ref=e513]
+        - text: "1"
+        - link "Page 2" [ref=e516] [cursor=pointer]:
+          - /url: /search?q=Mike+Smolko+USA+Financial+LinkedIn&sca_esv=d3b625d2bcd07c3a&ei=e3zyaeHUD5DcqtsPmNiOsQI&start=10&sa=N&sstk=Af77f_eIaeYURSSyy0Spyeg93owROPxUzfgs1gfelkC3VyOUvZqFyXu-gEn1P-0AcE2VL7BOdOmmemWnr2WjqcHhWbGooJvhoQECrw&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ8tMDegQILxAE
+          - text: "2"
+        - link "Page 3" [ref=e518] [cursor=pointer]:
+          - /url: /search?q=Mike+Smolko+USA+Financial+LinkedIn&sca_esv=d3b625d2bcd07c3a&ei=e3zyaeHUD5DcqtsPmNiOsQI&start=20&sa=N&sstk=Af77f_eIaeYURSSyy0Spyeg93owROPxUzfgs1gfelkC3VyOUvZqFyXu-gEn1P-0AcE2VL7BOdOmmemWnr2WjqcHhWbGooJvhoQECrw&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ8tMDegQILxAG
+          - text: "3"
+        - link "Page 4" [ref=e520] [cursor=pointer]:
+          - /url: /search?q=Mike+Smolko+USA+Financial+LinkedIn&sca_esv=d3b625d2bcd07c3a&ei=e3zyaeHUD5DcqtsPmNiOsQI&start=30&sa=N&sstk=Af77f_eIaeYURSSyy0Spyeg93owROPxUzfgs1gfelkC3VyOUvZqFyXu-gEn1P-0AcE2VL7BOdOmmemWnr2WjqcHhWbGooJvhoQECrw&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ8tMDegQILxAI
+          - text: "4"
+        - link "Page 5" [ref=e522] [cursor=pointer]:
+          - /url: /search?q=Mike+Smolko+USA+Financial+LinkedIn&sca_esv=d3b625d2bcd07c3a&ei=e3zyaeHUD5DcqtsPmNiOsQI&start=40&sa=N&sstk=Af77f_eIaeYURSSyy0Spyeg93owROPxUzfgs1gfelkC3VyOUvZqFyXu-gEn1P-0AcE2VL7BOdOmmemWnr2WjqcHhWbGooJvhoQECrw&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ8tMDegQILxAK
+          - text: "5"
+        - link "Page 6" [ref=e524] [cursor=pointer]:
+          - /url: /search?q=Mike+Smolko+USA+Financial+LinkedIn&sca_esv=d3b625d2bcd07c3a&ei=e3zyaeHUD5DcqtsPmNiOsQI&start=50&sa=N&sstk=Af77f_eIaeYURSSyy0Spyeg93owROPxUzfgs1gfelkC3VyOUvZqFyXu-gEn1P-0AcE2VL7BOdOmmemWnr2WjqcHhWbGooJvhoQECrw&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ8tMDegQILxAM
+          - text: "6"
+        - link "Page 7" [ref=e526] [cursor=pointer]:
+          - /url: /search?q=Mike+Smolko+USA+Financial+LinkedIn&sca_esv=d3b625d2bcd07c3a&ei=e3zyaeHUD5DcqtsPmNiOsQI&start=60&sa=N&sstk=Af77f_eIaeYURSSyy0Spyeg93owROPxUzfgs1gfelkC3VyOUvZqFyXu-gEn1P-0AcE2VL7BOdOmmemWnr2WjqcHhWbGooJvhoQECrw&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ8tMDegQILxAO
+          - text: "7"
+        - link "Page 8" [ref=e528] [cursor=pointer]:
+          - /url: /search?q=Mike+Smolko+USA+Financial+LinkedIn&sca_esv=d3b625d2bcd07c3a&ei=e3zyaeHUD5DcqtsPmNiOsQI&start=70&sa=N&sstk=Af77f_eIaeYURSSyy0Spyeg93owROPxUzfgs1gfelkC3VyOUvZqFyXu-gEn1P-0AcE2VL7BOdOmmemWnr2WjqcHhWbGooJvhoQECrw&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ8tMDegQILxAQ
+          - text: "8"
+        - link "Page 9" [ref=e530] [cursor=pointer]:
+          - /url: /search?q=Mike+Smolko+USA+Financial+LinkedIn&sca_esv=d3b625d2bcd07c3a&ei=e3zyaeHUD5DcqtsPmNiOsQI&start=80&sa=N&sstk=Af77f_eIaeYURSSyy0Spyeg93owROPxUzfgs1gfelkC3VyOUvZqFyXu-gEn1P-0AcE2VL7BOdOmmemWnr2WjqcHhWbGooJvhoQECrw&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ8tMDegQILxAS
+          - text: "9"
+        - link "Page 10" [ref=e532] [cursor=pointer]:
+          - /url: /search?q=Mike+Smolko+USA+Financial+LinkedIn&sca_esv=d3b625d2bcd07c3a&ei=e3zyaeHUD5DcqtsPmNiOsQI&start=90&sa=N&sstk=Af77f_eIaeYURSSyy0Spyeg93owROPxUzfgs1gfelkC3VyOUvZqFyXu-gEn1P-0AcE2VL7BOdOmmemWnr2WjqcHhWbGooJvhoQECrw&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ8tMDegQILxAU
+          - text: "10"
+        - heading "Next" [level=2] [ref=e534]:
+          - link "Next" [ref=e535] [cursor=pointer]:
+            - /url: /search?q=Mike+Smolko+USA+Financial+LinkedIn&sca_esv=d3b625d2bcd07c3a&ei=e3zyaeHUD5DcqtsPmNiOsQI&start=10&sa=N&sstk=Af77f_eIaeYURSSyy0Spyeg93owROPxUzfgs1gfelkC3VyOUvZqFyXu-gEn1P-0AcE2VL7BOdOmmemWnr2WjqcHhWbGooJvhoQECrw&ved=2ahUKEwih_r7fhJSUAxUQrmoFHRisIyYQ8NMDegQILxAW
+            - generic [ref=e537]: Next
+      - navigation
+    - contentinfo [ref=e538]:
+      - heading "Footer Links" [level=1] [ref=e539]
+      - generic [ref=e543]:
+        - generic [ref=e547]:
+          - button "Line Creek - Northern Heights, Kansas City, MO - From your IP address" [ref=e549] [cursor=pointer]:
+            - generic [ref=e550]: Line Creek - Northern Heights, Kansas City, MO
+            - generic [ref=e552]:
+              - text: "-"
+              - generic [ref=e553]: From your IP address
+          - text: "-"
+          - button "Update location" [ref=e555] [cursor=pointer]: Update location
+        - generic [ref=e558]:
+          - link "Help" [ref=e559] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=en&fg=1
+          - link "Send feedback" [ref=e560] [cursor=pointer]:
+            - /url: "#"
+          - link "Privacy" [ref=e561] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=en&fg=1
+          - link "Terms" [ref=e562] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=en&fg=1

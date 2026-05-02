@@ -1,0 +1,24 @@
+{
+  "validation_date": "2026-05-02T09:03:05.192730",
+  "data_summary": {
+    "total_invoices": 17478,
+    "classified": 2991,
+    "unclassified": 14487,
+    "unique_suppliers": 2367
+  },
+  "accuracy": {
+    "ai_accuracy_pct": 77.37451737451737,
+    "target_pct": 95,
+    "meets_target": false
+  },
+  "auto_assign_rate": {
+    "ai_rate_pct": 35.02689094862112,
+    "target_pct": 60,
+    "meets_target": false,
+    "improvement_vs_manual": 16.026890948621123
+  },
+  "roi": {
+    "estimated_annual_savings_usd": 39325,
+    "confidence_threshold": 70
+  }
+}

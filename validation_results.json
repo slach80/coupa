@@ -1,0 +1,12 @@
+{
+  "validation_date": "2026-05-02T09:02:43.994030",
+  "data_summary": {
+    "total_invoices": 17478,
+    "classified": 2991,
+    "unclassified": 14487,
+    "unique_suppliers": 2367
+  },
+  "accuracy": {
+    "ai_accuracy_pct": 77.37451737451737,
+    "target_pct": 95,
+    "meets_target": 
