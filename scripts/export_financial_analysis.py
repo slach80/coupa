@@ -101,9 +101,18 @@ def export_financial_analysis(db_path='classification.db', results_file=None):
             # Read all sheets from results file
             results_excel = pd.ExcelFile(results_file)
 
-            # Tab 3: Full classified results
-            if 'All Classifications' in results_excel.sheet_names:
-                df_all = pd.read_excel(results_file, sheet_name='All Classifications')
+            # Combine all classification sheets into one dataframe
+            df_all = pd.DataFrame()
+            for sheet in ['Auto-Assigned', 'Needs Review', 'Admin Alerts', 'No Match']:
+                if sheet in results_excel.sheet_names:
+                    df_sheet = pd.read_excel(results_file, sheet_name=sheet)
+                    df_all = pd.concat([df_all, df_sheet], ignore_index=True)
+
+            if len(df_all) > 0:
+                # Normalize column names (handle both upper and lowercase)
+                df_all.columns = df_all.columns.str.title().str.replace('_', ' ')
+
+                # Tab 3: All Classifications
                 df_all.to_excel(writer, sheet_name='All Classifications', index=False)
                 print(f"   ✓ Exported {len(df_all)} total classifications")
 
@@ -121,9 +130,9 @@ def export_financial_analysis(db_path='classification.db', results_file=None):
                         'Classification Method': method,
                         'Invoice Count': len(method_invoices),
                         'Percentage': round(len(method_invoices) / len(df_all) * 100, 2),
-                        'Avg Confidence': round(method_invoices['Confidence'].mean(), 1),
-                        'Min Confidence': method_invoices['Confidence'].min(),
-                        'Max Confidence': method_invoices['Confidence'].max()
+                        'Avg Confidence': round(method_invoices['Confidence'].mean(), 1) if 'Confidence' in df_all.columns else 0,
+                        'Min Confidence': method_invoices['Confidence'].min() if 'Confidence' in df_all.columns else 0,
+                        'Max Confidence': method_invoices['Confidence'].max() if 'Confidence' in df_all.columns else 0
                     })
 
                 df_methods = pd.DataFrame(method_details)
@@ -133,11 +142,15 @@ def export_financial_analysis(db_path='classification.db', results_file=None):
 
                 # Tab 5: Activity Code Summary (from classified results)
                 print("\n📊 Tab 5: Activity Code Summary...")
-                # Filter classified invoices only
-                df_classified = df_all[df_all['Activity Code'].notna()].copy()
+                # Find the activity code column (could be 'Ai Code' or 'Activity Code')
+                code_col = 'Ai Code' if 'Ai Code' in df_all.columns else 'Activity Code'
+                supplier_col = 'Supplier' if 'Supplier' in df_all.columns else 'supplier'
 
-                code_summary = df_classified.groupby('Activity Code').agg({
-                    'Supplier': 'count',
+                # Filter classified invoices only
+                df_classified = df_all[df_all[code_col].notna()].copy()
+
+                code_summary = df_classified.groupby(code_col).agg({
+                    supplier_col: 'count',
                     'Confidence': 'mean'
                 }).reset_index()
                 code_summary.columns = ['Activity Code', 'Invoice Count', 'Avg Confidence']
@@ -148,7 +161,7 @@ def export_financial_analysis(db_path='classification.db', results_file=None):
                 code_summary['Description'] = code_summary['Activity Code'].map(code_desc_map)
 
                 # Add unique supplier count per code
-                suppliers_per_code = df_classified.groupby('Activity Code')['Supplier'].nunique().to_dict()
+                suppliers_per_code = df_classified.groupby(code_col)[supplier_col].nunique().to_dict()
                 code_summary['Unique Suppliers'] = code_summary['Activity Code'].map(suppliers_per_code)
 
                 # Reorder columns
@@ -160,22 +173,22 @@ def export_financial_analysis(db_path='classification.db', results_file=None):
 
                 # Tab 6: Top Suppliers Analysis
                 print("\n📊 Tab 6: Top Suppliers...")
-                supplier_summary = df_all.groupby('Supplier').agg({
-                    'Activity Code': lambda x: x.notna().sum(),  # Count classified
+                supplier_summary = df_all.groupby(supplier_col).agg({
+                    code_col: lambda x: x.notna().sum(),  # Count classified
                     'Confidence': 'mean',
                     'Method': lambda x: x.mode()[0] if len(x.mode()) > 0 else 'N/A'
                 }).reset_index()
                 supplier_summary.columns = ['Supplier', 'Classified Count', 'Avg Confidence', 'Primary Method']
 
                 # Add total invoice count
-                total_counts = df_all['Supplier'].value_counts().to_dict()
+                total_counts = df_all[supplier_col].value_counts().to_dict()
                 supplier_summary['Total Invoices'] = supplier_summary['Supplier'].map(total_counts)
                 supplier_summary['Classification Rate %'] = (supplier_summary['Classified Count'] /
                                                               supplier_summary['Total Invoices'] * 100).round(1)
 
                 # Add primary activity code
                 def get_primary_code(supplier):
-                    codes = df_all[df_all['Supplier'] == supplier]['Activity Code'].dropna()
+                    codes = df_all[df_all[supplier_col] == supplier][code_col].dropna()
                     if len(codes) > 0:
                         return codes.mode()[0] if len(codes.mode()) > 0 else codes.iloc[0]
                     return None
@@ -192,11 +205,11 @@ def export_financial_analysis(db_path='classification.db', results_file=None):
 
                 # Tab 7: Unclassified Invoices
                 print("\n📊 Tab 7: Unclassified Invoices...")
-                df_unclassified = df_all[df_all['Activity Code'].isna()].copy()
+                df_unclassified = df_all[df_all[code_col].isna()].copy()
 
                 # Add frequency column
-                supplier_freq = df_unclassified['Supplier'].value_counts().to_dict()
-                df_unclassified['Supplier Frequency'] = df_unclassified['Supplier'].map(supplier_freq)
+                supplier_freq = df_unclassified[supplier_col].value_counts().to_dict()
+                df_unclassified['Supplier Frequency'] = df_unclassified[supplier_col].map(supplier_freq)
 
                 df_unclassified = df_unclassified.sort_values('Supplier Frequency', ascending=False)
                 df_unclassified.to_excel(writer, sheet_name='Unclassified', index=False)
@@ -210,8 +223,8 @@ def export_financial_analysis(db_path='classification.db', results_file=None):
                      'Notes': f'{len(df_classified)/len(df_all)*100:.1f}% of total'},
                     {'Metric': 'Unclassified Invoices', 'Value': len(df_unclassified),
                      'Notes': f'{len(df_unclassified)/len(df_all)*100:.1f}% of total'},
-                    {'Metric': 'Unique Suppliers', 'Value': df_all['Supplier'].nunique(), 'Notes': ''},
-                    {'Metric': 'Unique Activity Codes', 'Value': df_classified['Activity Code'].nunique(), 'Notes': ''},
+                    {'Metric': 'Unique Suppliers', 'Value': df_all[supplier_col].nunique(), 'Notes': ''},
+                    {'Metric': 'Unique Activity Codes', 'Value': df_classified[code_col].nunique(), 'Notes': ''},
                     {'Metric': 'Average Confidence', 'Value': f"{df_classified['Confidence'].mean():.1f}%", 'Notes': ''},
                     {'Metric': '', 'Value': '', 'Notes': ''},
                     {'Metric': 'Classification Methods:', 'Value': '', 'Notes': ''},
